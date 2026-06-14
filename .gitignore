@@ -1,0 +1,12 @@
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+*.iml
+
+backend/target/
+backend/uploads/
+uploads/
+work/
+outputs/

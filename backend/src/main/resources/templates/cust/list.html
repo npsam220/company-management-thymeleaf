@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>取引先情報一覧</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+
+<body class="cust-spec-page">
+    <header class="app-header">
+        <div class="app-header__inner">
+            <a class="brand" th:href="@{/cust/list}">Company Management</a>
+            <span>取引先情報一覧</span>
+        </div>
+    </header>
+    <main class="container">
+        <div class="alert alert--success" th:if="${message}" th:text="${message}"></div>
+
+        <section class="cust-spec-shell">
+            <div class="cust-spec-title">
+                <h1>取引先情報一覧</h1>
+            </div>
+
+            <form method="get" th:action="@{/cust/list}" th:object="${search}">
+                <div class="cust-spec-search">
+                    <div class="cust-spec-search__row">
+                        <label class="cust-spec-label" for="custNm">取引先名</label>
+                        <input id="custNm" type="text" th:field="*{custNm}" placeholder="取引先名を入力">
+
+                        <fieldset class="cust-spec-choice">
+                            <legend>Pマーク / ISMS</legend>
+                            <div class="segmented-control">
+                                <label>
+                                    <input type="radio" th:field="*{custInforSecurity}" value="01">
+                                    <span>あり</span>
+                                </label>
+                                <label>
+                                    <input type="radio" th:field="*{custInforSecurity}" value="02">
+                                    <span>なし</span>
+                                </label>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <div class="cust-spec-search__row">
+                        <label class="cust-spec-label" for="managerNm">他社担当者</label>
+                        <input id="managerNm" type="text" th:field="*{managerNm}" placeholder="担当者名を入力">
+
+                        <fieldset class="cust-spec-choice">
+                            <legend>派遣資格</legend>
+                            <div class="segmented-control">
+                                <label>
+                                    <input type="radio" th:field="*{custDispatch}" value="01">
+                                    <span>あり</span>
+                                </label>
+                                <label>
+                                    <input type="radio" th:field="*{custDispatch}" value="02">
+                                    <span>なし</span>
+                                </label>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+
+                <div class="cust-spec-actions">
+                    <button class="button button--spec" type="submit">検索</button>
+                    <a class="button button--spec" th:href="@{/cust/create}">新規登録</a>
+                    <a class="button button--spec" th:href="@{/cust/list}">リセット</a>
+                </div>
+            </form>
+
+            <div class="cust-spec-result-head">
+                <label for="pageSize">表示件数</label>
+                <select id="pageSize" name="pageSize" form="page-size-form" onchange="this.form.submit()">
+                    <option th:each="size : ${T(java.util.List).of(10, 30, 50)}"
+                        th:value="${size}"
+                        th:text="${size}"
+                        th:selected="${size == pageSize}"></option>
+                </select>
+                <span class="cust-spec-result-count">
+                    全<strong th:text="${totalCount}">0</strong>件
+                </span>
+            </div>
+
+            <form id="page-size-form" method="get" th:action="@{/cust/list}">
+                <input type="hidden" name="custNm" th:value="${search.custNm}">
+                <input type="hidden" name="managerNm" th:value="${search.managerNm}">
+                <input type="hidden" name="custInforSecurity" th:value="${search.custInforSecurity}">
+                <input type="hidden" name="custDispatch" th:value="${search.custDispatch}">
+            </form>
+
+            <div class="table-scroll">
+                <table class="cust-spec-table">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>取引先名</th>
+                            <th>電話番号</th>
+                            <th>他社担当者</th>
+                            <th>住所</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="cust, stat : ${custList}">
+                            <td th:text="${(currentPage - 1) * pageSize + stat.index + 1}"></td>
+                            <td th:text="${cust.custNm}"></td>
+                            <td th:text="${cust.custPhone}"></td>
+                            <td th:text="${cust.managerNm}"></td>
+                            <td th:text="${cust.custAddress}"></td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(custList)}">
+                            <td class="empty-state" colspan="5">該当する取引先がありません。</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <nav class="pagination" th:if="${totalPages > 1}">
+                <a th:classappend="${currentPage == 1} ? 'disabled'"
+                    th:href="@{/cust/list(page=${currentPage - 1},pageSize=${pageSize},custNm=${search.custNm},managerNm=${search.managerNm},custInforSecurity=${search.custInforSecurity},custDispatch=${search.custDispatch})}">&lt;&lt;</a>
+                <a th:each="number : ${pageNumbers}"
+                    th:classappend="${number == currentPage} ? 'active'"
+                    th:text="${number}"
+                    th:href="@{/cust/list(page=${number},pageSize=${pageSize},custNm=${search.custNm},managerNm=${search.managerNm},custInforSecurity=${search.custInforSecurity},custDispatch=${search.custDispatch})}"></a>
+                <a th:classappend="${currentPage == totalPages} ? 'disabled'"
+                    th:href="@{/cust/list(page=${currentPage + 1},pageSize=${pageSize},custNm=${search.custNm},managerNm=${search.managerNm},custInforSecurity=${search.custInforSecurity},custDispatch=${search.custDispatch})}">&gt;&gt;</a>
+            </nav>
+        </section>
+    </main>
+</body>
+
+</html>

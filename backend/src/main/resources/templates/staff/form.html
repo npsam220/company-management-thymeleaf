@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="fields">
+    <section class="panel form-section">
+        <h2>基本情報</h2>
+        <div class="form-grid">
+            <label>
+                <span>社員番号</span>
+                <input id="staffNo" type="text" th:field="*{staffNo}" readonly placeholder="契約日から自動採番">
+            </label>
+            <label class="required">
+                <span>氏名</span>
+                <input type="text" th:field="*{staffNm}" required>
+            </label>
+            <label>
+                <span>フリガナ</span>
+                <input type="text" th:field="*{staffKn}">
+            </label>
+            <label>
+                <span>アルファベット</span>
+                <input type="text" th:field="*{staffAlphabet}">
+            </label>
+            <label class="required">
+                <span>性別</span>
+                <select th:field="*{staffSex}" required>
+                    <option value="">選択してください</option>
+                    <option value="01">男</option>
+                    <option value="02">女</option>
+                </select>
+            </label>
+            <label class="required">
+                <span>生年月日</span>
+                <input id="staffBirthdt" type="date" th:field="*{staffBirthdt}" required>
+            </label>
+            <label>
+                <span>年齢</span>
+                <input id="staffAge" type="number" th:field="*{staffAge}" min="0" readonly>
+            </label>
+            <label class="required">
+                <span>国籍</span>
+                <select th:field="*{staffCountry}" required>
+                    <option value="">選択してください</option>
+                    <option value="01">中国</option>
+                    <option value="02">日本</option>
+                    <option value="03">その他</option>
+                </select>
+            </label>
+            <label>
+                <span>出身地</span>
+                <input type="text" th:field="*{staffBirthplace}">
+            </label>
+            <label class="required">
+                <span>スタッフ区分</span>
+                <select id="staffCls" th:field="*{staffCls}" required>
+                    <option value="">選択してください</option>
+                    <option th:each="item : ${staffClsList}"
+                            th:value="${item.comCd}"
+                            th:text="${item.comContent1}"></option>
+                </select>
+            </label>
+            <label>
+                <span>所属会社</span>
+                <input id="staffCompany" type="text" th:field="*{staffCompany}">
+            </label>
+            <label class="required">
+                <span>営業ステータス</span>
+                <select th:field="*{staffSalesstatus}" required>
+                    <option value="">選択してください</option>
+                    <option th:each="item : ${salesStatusList}"
+                            th:value="${item.comCd}"
+                            th:text="${item.comContent1}"></option>
+                </select>
+            </label>
+        </div>
+    </section>
+
+    <section class="panel form-section">
+        <h2>連絡先</h2>
+        <div class="form-grid">
+            <label>
+                <span>郵便番号</span>
+                <div class="input-action">
+                    <input id="staffPostno" type="text" th:field="*{staffPostno}" placeholder="1234567">
+                    <button id="postalSearch" class="button button--small button--secondary" type="button">住所検索</button>
+                </div>
+            </label>
+            <label class="span-2">
+                <span>住所</span>
+                <input id="staffAddress" type="text" th:field="*{staffAddress}">
+            </label>
+            <label>
+                <span>メール</span>
+                <input type="email" th:field="*{staffMail}">
+            </label>
+            <label>
+                <span>電話番号</span>
+                <input type="tel" th:field="*{staffPhoneno}">
+            </label>
+            <label>
+                <span>緊急連絡先</span>
+                <input type="tel" th:field="*{staffEmergencycall}">
+            </label>
+            <label>
+                <span>最寄駅</span>
+                <input type="text" th:field="*{staffNeareststation}">
+            </label>
+        </div>
+    </section>
+
+    <section class="panel form-section">
+        <h2>社内・契約情報</h2>
+        <div class="form-grid">
+            <label>
+                <span>部署</span>
+                <select th:field="*{staffGroup}">
+                    <option value="">選択してください</option>
+                    <option value="01">高速開発部</option>
+                    <option value="02">システム開発部</option>
+                    <option value="03">製品開発部</option>
+                    <option value="04">管理部</option>
+                    <option value="05">営業部</option>
+                </select>
+            </label>
+            <label>
+                <span>役職</span>
+                <select th:field="*{staffPost}">
+                    <option value="">選択してください</option>
+                    <option value="01">一般社員</option>
+                    <option value="02">役員</option>
+                    <option value="03">部長</option>
+                    <option value="04">事業部長</option>
+                </select>
+            </label>
+            <label class="required">
+                <span>契約日</span>
+                <input id="staffIndt" type="date" th:field="*{staffIndt}" required>
+            </label>
+            <label>
+                <span>退職日</span>
+                <input type="date" th:field="*{staffOutdt}">
+            </label>
+            <label>
+                <span>マイナンバー</span>
+                <input type="text" th:field="*{staffMyno}">
+            </label>
+            <label>
+                <span>在留カード番号</span>
+                <input type="text" th:field="*{staffResidencecard}">
+            </label>
+            <label>
+                <span>在留資格</span>
+                <select th:field="*{staffRestype}">
+                    <option value="">選択してください</option>
+                    <option value="01">技術・人文知識・国際業務</option>
+                    <option value="02">高度専門職</option>
+                    <option value="03">永住者</option>
+                    <option value="04">留学（在籍審中）</option>
+                    <option value="05">転勤（社内転勤）</option>
+                </select>
+            </label>
+            <label>
+                <span>在留期限</span>
+                <input type="date" th:field="*{staffCardenddt}">
+            </label>
+            <label>
+                <span>保険番号</span>
+                <input type="text" th:field="*{staffInsuranceno}">
+            </label>
+            <label>
+                <span>保険種類</span>
+                <select th:field="*{staffInsurancetype}">
+                    <option value="">選択してください</option>
+                    <option value="01">国民</option>
+                    <option value="02">社会</option>
+                </select>
+            </label>
+        </div>
+    </section>
+
+    <section class="panel form-section">
+        <h2>ファイル・備考</h2>
+        <div class="form-grid">
+            <label>
+                <span>写真</span>
+                <input type="file" name="photoFile" accept=".jpg,.jpeg,.png,.gif">
+                <img class="photo-preview" th:if="*{staffPhoto != null and !staffPhoto.isEmpty()}"
+                     th:src="*{staffPhoto}" alt="スタッフ写真">
+            </label>
+            <label>
+                <span>履歴書</span>
+                <input type="file" name="resumeFile" accept=".pdf,.doc,.docx">
+                <a class="file-link" th:if="*{staffResume != null and !staffResume.isEmpty()}"
+                   th:href="*{staffResume}" target="_blank">登録済み履歴書を開く</a>
+            </label>
+            <label class="span-2">
+                <span>備考</span>
+                <textarea th:field="*{staffRmk1}" rows="3"></textarea>
+            </label>
+            <label class="span-2">
+                <span>得意分野・補足</span>
+                <textarea th:field="*{staffRmk2}" rows="3"></textarea>
+            </label>
+        </div>
+    </section>
+</div>
+</body>
+</html>

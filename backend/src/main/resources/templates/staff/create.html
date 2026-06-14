@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${pageTitle}">スタッフ新規登録</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<header class="app-header">
+    <div class="app-header__inner">
+        <a class="brand" th:href="@{/staff/list}">Company Management</a>
+        <span>スタッフ管理</span>
+    </div>
+</header>
+<main class="container">
+    <div class="page-heading">
+        <div>
+            <p class="eyebrow">STAFF MANAGEMENT</p>
+            <h1 th:text="${pageTitle}"></h1>
+        </div>
+        <a class="button button--secondary" th:href="@{/staff/list}">一覧へ戻る</a>
+    </div>
+    <div class="alert alert--error" th:if="${errorMessage}" th:text="${errorMessage}"></div>
+    <form method="post" enctype="multipart/form-data" th:action="@{/staff/create}" th:object="${staff}">
+        <div th:replace="~{staff/form :: fields}"></div>
+        <div class="form-actions">
+            <a class="button button--secondary" th:href="@{/staff/list}">キャンセル</a>
+            <button class="button button--primary" type="submit">登録</button>
+        </div>
+    </form>
+</main>
+<script th:src="@{/js/staff-form.js}"></script>
+</body>
+</html>

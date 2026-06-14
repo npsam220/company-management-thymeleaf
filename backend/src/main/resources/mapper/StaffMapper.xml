@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.company.backend.mapper.StaffMapper">
+
+    <!-- 一覽 -->
+    <select id="findAll"
+        resultType="com.company.backend.entity.Staff"> SELECT S.STAFF_ID, S.STAFF_NO, S.STAFF_NM,
+        S.STAFF_CLS, C1.COM_CONTENT_1 AS STAFF_CLS_NAME, S.STAFF_SALESSTATUS, C2.COM_CONTENT_1 AS
+        STAFF_SALESSTATUS_NAME, S.STAFF_SEX, S.STAFF_RMK1, S.STAFF_CRD_DT, S.STAFF_UPD_DT FROM
+        STAFF_TBL S LEFT JOIN COM_TBL C1 ON S.STAFF_CLS = C1.COM_CD AND C1.COM_ID = 'STAFF_CLS' LEFT
+        JOIN COM_TBL C2 ON S.STAFF_SALESSTATUS = C2.COM_CD AND C2.COM_ID = 'STAFF_SALESSTATUS' ORDER
+        BY S.STAFF_NO </select>
+
+    <!-- STAFF_CLS master -->
+    <select id="findStaffClsList"
+        resultType="com.company.backend.dto.CommonDto"> SELECT COM_CD, COM_CONTENT_1 FROM COM_TBL
+        WHERE COM_ID = 'STAFF_CLS' ORDER BY COM_CD </select>
+
+    <!-- SALES_STATUS master -->
+    <select id="findSalesStatusList"
+        resultType="com.company.backend.dto.CommonDto"> SELECT COM_CD, COM_CONTENT_1 FROM COM_TBL
+        WHERE COM_ID = 'STAFF_SALESSTATUS' ORDER BY COM_CD </select>
+
+    <!-- 搜尋 -->
+    <select id="searchStaff"
+        parameterType="com.company.backend.dto.StaffSearchDto"
+        resultType="com.company.backend.entity.Staff"> SELECT S.STAFF_ID, S.STAFF_NO, S.STAFF_NM,
+        S.STAFF_RMK1, S.STAFF_CLS, C1.COM_CONTENT_1 AS STAFF_CLS_NAME, S.STAFF_SALESSTATUS,
+        C2.COM_CONTENT_1 AS STAFF_SALESSTATUS_NAME FROM STAFF_TBL S LEFT JOIN COM_TBL C1 ON
+        S.STAFF_CLS = C1.COM_CD AND C1.COM_ID = 'STAFF_CLS' LEFT JOIN COM_TBL C2 ON
+        S.STAFF_SALESSTATUS = C2.COM_CD AND C2.COM_ID = 'STAFF_SALESSTATUS' <where>
+
+            <if test="staffNm != null and staffNm != ''"> AND S.STAFF_NM LIKE CONCAT('%',
+        #{staffNm}, '%') </if>
+
+            <if test="staffCls != null and staffCls != ''"> AND S.STAFF_CLS =
+        #{staffCls} </if>
+
+            <if test="staffSalesstatus != null and staffSalesstatus != ''"> AND
+        S.STAFF_SALESSTATUS = #{staffSalesstatus} </if>
+
+        </where> ORDER BY S.STAFF_NO LIMIT
+        #{offset}, #{pageSize} </select>
+
+    <!-- 詳細 -->
+    <select id="findById"
+        resultType="com.company.backend.entity.Staff"> SELECT S.STAFF_ID, S.STAFF_NO, S.STAFF_NM,
+        S.STAFF_CLS, C1.COM_CONTENT_1 AS STAFF_CLS_NAME, S.STAFF_SALESSTATUS, C2.COM_CONTENT_1 AS
+        STAFF_SALESSTATUS_NAME, S.STAFF_SEX, S.STAFF_RMK1, S.STAFF_CRD_DT, S.STAFF_UPD_DT FROM
+        STAFF_TBL S LEFT JOIN COM_TBL C1 ON S.STAFF_CLS = C1.COM_CD AND C1.COM_ID = 'STAFF_CLS' LEFT
+        JOIN COM_TBL C2 ON S.STAFF_SALESSTATUS = C2.COM_CD AND C2.COM_ID = 'STAFF_SALESSTATUS' WHERE
+        S.STAFF_ID = #{staffId} </select>
+
+    <!-- 新增 -->
+    <insert id="create" parameterType="com.company.backend.entity.Staff"> INSERT INTO STAFF_TBL (
+        STAFF_NO, STAFF_NM, STAFF_KN, STAFF_ALPHABET, STAFF_SEX, STAFF_COUNTRY, STAFF_BIRTHPLACE,
+        STAFF_CLS, STAFF_COMPANY, STAFF_POSTNO, STAFF_ADDRESS, STAFF_BIRTHDT, STAFF_AGE, STAFF_MAIL,
+        STAFF_PHONENO, STAFF_EMERGENCYCALL, STAFF_NEARESTSTATION, STAFF_SALESSTATUS, STAFF_POST,
+        STAFF_GROUP, STAFF_MYNO, STAFF_RESIDENCECARD, STAFF_RESTYPE, STAFF_CARDENDDT, STAFF_PHOTO,
+        STAFF_INSURANCENO, STAFF_INSURANCETYPE, STAFF_RESUME, STAFF_RMK1, STAFF_RMK2, STAFF_INDT,
+        STAFF_OUTDT, STAFF_CRD_USR, STAFF_CRD_DT, STAFF_UPD_USR, STAFF_UPD_DT ) VALUES ( #{staffNo},
+        #{staffNm}, #{staffKn}, #{staffAlphabet}, #{staffSex}, #{staffCountry}, #{staffBirthplace},
+        #{staffCls}, #{staffCompany}, #{staffPostno}, #{staffAddress}, #{staffBirthdt}, #{staffAge},
+        #{staffMail}, #{staffPhoneno}, #{staffEmergencycall}, #{staffNeareststation},
+        #{staffSalesstatus}, #{staffPost}, #{staffGroup}, #{staffMyno}, #{staffResidencecard},
+        #{staffRestype}, #{staffCardenddt}, #{staffPhoto}, #{staffInsuranceno},
+        #{staffInsurancetype}, #{staffResume}, #{staffRmk1}, #{staffRmk2}, #{staffIndt},
+        #{staffOutdt}, 'system', NOW(), 'system', NOW() ) </insert>
+
+
+    <!-- 刪除 -->
+    <delete id="delete"
+        parameterType="long"> DELETE FROM STAFF_TBL WHERE STAFF_ID = #{staffId} </delete>
+
+    <select id="countStaff"
+        parameterType="com.company.backend.dto.StaffSearchDto"
+        resultType="int"> SELECT COUNT(*) FROM STAFF_TBL S <where>
+
+            <if test="staffNm != null and staffNm != ''"> AND S.STAFF_NM LIKE CONCAT('%',
+        #{staffNm}, '%') </if>
+
+        <if test="staffCls != null and staffCls != ''"> AND S.STAFF_CLS =
+        #{staffCls} </if>
+
+        <if test="staffSalesstatus != null and staffSalesstatus != ''"> AND
+        S.STAFF_SALESSTATUS = #{staffSalesstatus} </if>
+
+        </where>
+
+    </select>
+    <update id="update"
+        parameterType="com.company.backend.entity.Staff"> UPDATE STAFF_TBL SET STAFF_NO =
+        #{staffNo}, STAFF_NM = #{staffNm}, STAFF_KN = #{staffKn}, STAFF_ALPHABET = #{staffAlphabet},
+        STAFF_SEX = #{staffSex}, STAFF_COUNTRY = #{staffCountry}, STAFF_BIRTHPLACE =
+        #{staffBirthplace}, STAFF_CLS = #{staffCls}, STAFF_COMPANY = #{staffCompany}, STAFF_POSTNO =
+        #{staffPostno}, STAFF_ADDRESS = #{staffAddress}, STAFF_BIRTHDT = #{staffBirthdt}, STAFF_AGE
+        = #{staffAge}, STAFF_MAIL = #{staffMail}, STAFF_PHONENO = #{staffPhoneno},
+        STAFF_EMERGENCYCALL = #{staffEmergencycall}, STAFF_NEARESTSTATION = #{staffNeareststation},
+        STAFF_SALESSTATUS = #{staffSalesstatus}, STAFF_POST = #{staffPost}, STAFF_GROUP =
+        #{staffGroup}, STAFF_MYNO = #{staffMyno}, STAFF_RESIDENCECARD = #{staffResidencecard},
+        STAFF_RESTYPE = #{staffRestype}, STAFF_CARDENDDT = #{staffCardenddt}, STAFF_PHOTO =
+        #{staffPhoto}, STAFF_INSURANCENO = #{staffInsuranceno}, STAFF_INSURANCETYPE =
+        #{staffInsurancetype}, STAFF_RESUME = #{staffResume}, STAFF_RMK1 = #{staffRmk1}, STAFF_RMK2
+        = #{staffRmk2}, STAFF_INDT = #{staffIndt}, STAFF_OUTDT = #{staffOutdt}, STAFF_UPD_USR =
+        'system', STAFF_UPD_DT = NOW() WHERE STAFF_ID = #{staffId} </update>
+
+    <select id="getStaffDetail"
+        parameterType="long"
+        resultType="com.company.backend.entity.Staff"> SELECT S.STAFF_ID, S.STAFF_NO, S.STAFF_NM,
+        S.STAFF_KN, S.STAFF_ALPHABET, S.STAFF_SEX, S.STAFF_COUNTRY, S.STAFF_BIRTHPLACE, S.STAFF_CLS,
+        C1.COM_CONTENT_1 AS STAFF_CLS_NAME, S.STAFF_COMPANY, S.STAFF_POSTNO, S.STAFF_ADDRESS,
+        S.STAFF_BIRTHDT, S.STAFF_AGE, S.STAFF_MAIL, S.STAFF_PHONENO, S.STAFF_EMERGENCYCALL,
+        S.STAFF_NEARESTSTATION, S.STAFF_SALESSTATUS, C2.COM_CONTENT_1 AS STAFF_SALESSTATUS_NAME,
+        S.STAFF_POST, S.STAFF_GROUP, S.STAFF_MYNO, S.STAFF_RESIDENCECARD, S.STAFF_RESTYPE,
+        S.STAFF_CARDENDDT, S.STAFF_PHOTO, S.STAFF_INSURANCENO, S.STAFF_INSURANCETYPE,
+        S.STAFF_RESUME, S.STAFF_RMK1, S.STAFF_RMK2, S.STAFF_INDT, S.STAFF_OUTDT, S.STAFF_CRD_DT,
+        S.STAFF_UPD_DT FROM STAFF_TBL S LEFT JOIN COM_TBL C1 ON S.STAFF_CLS = C1.COM_CD AND
+        C1.COM_ID = 'STAFF_CLS' LEFT JOIN COM_TBL C2 ON S.STAFF_SALESSTATUS = C2.COM_CD AND
+        C2.COM_ID = 'STAFF_SALESSTATUS' WHERE S.STAFF_ID = #{staffId} </select>
+
+    <select id="findMaxStaffNoByDate" parameterType="string" resultType="string"> SELECT
+        MAX(STAFF_NO) FROM STAFF_TBL WHERE STAFF_NO LIKE CONCAT(#{datePart}, '%') </select>
+</mapper>

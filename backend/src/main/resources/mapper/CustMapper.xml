@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.company.backend.mapper.CustMapper">
+
+    <sql id="custSearchConditions">
+        C.CUST_DELFLG = '0'
+
+        <if test="custNm != null and custNm != ''">
+            AND C.CUST_NM LIKE CONCAT('%', #{custNm}, '%')
+        </if>
+
+        <if test="custInforSecurity != null and custInforSecurity != ''">
+            AND C.CUST_INFOR_SECURITY = #{custInforSecurity}
+        </if>
+
+        <if test="custDispatch != null and custDispatch != ''">
+            AND C.CUST_DISPATCH = #{custDispatch}
+        </if>
+
+        <if test="managerNm != null and managerNm != ''">
+            AND EXISTS (
+                SELECT 1
+                FROM MANG_TBL M
+                WHERE M.MANAGER_CUST_ID = C.CUST_ID
+                  AND M.MANAGER_NM LIKE CONCAT('%', #{managerNm}, '%')
+            )
+        </if>
+    </sql>
+
+    <select id="searchCust"
+        parameterType="com.company.backend.dto.CustSearchDto"
+        resultType="com.company.backend.entity.Cust">
+        SELECT
+            C.CUST_ID,
+            C.CUST_NM,
+            C.CUST_KN,
+            C.CUST_PHONE,
+            C.CUST_ADDRESS,
+            C.CUST_INFOR_SECURITY,
+            C.CUST_DISPATCH,
+            M.MANAGER_NM
+        FROM CUST_TBL C
+        LEFT JOIN (
+            SELECT
+                MANAGER_CUST_ID,
+                GROUP_CONCAT(
+                    MANAGER_NM
+                    ORDER BY MANAGER_CD, MANAGER_CHRCD
+                    SEPARATOR '、'
+                ) AS MANAGER_NM
+            FROM MANG_TBL
+            GROUP BY MANAGER_CUST_ID
+        ) M ON M.MANAGER_CUST_ID = C.CUST_ID
+        WHERE
+            <include refid="custSearchConditions" />
+        ORDER BY C.CUST_NM
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="countCust"
+        parameterType="com.company.backend.dto.CustSearchDto"
+        resultType="int">
+        SELECT COUNT(*)
+        FROM CUST_TBL C
+        WHERE
+            <include refid="custSearchConditions" />
+    </select>
+
+</mapper>

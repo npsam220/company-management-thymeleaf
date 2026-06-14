@@ -1,0 +1,23 @@
+package com.company.backend.mapper;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
+
+import com.company.backend.dto.CustSearchDto;
+import com.company.backend.entity.Cust;
+
+@Mapper
+public interface CustMapper {
+    List<Cust> searchCust(CustSearchDto dto);
+
+    int countCust(CustSearchDto dto);
+
+    Cust getCustDetail();
+
+    void create();
+
+    void update();
+
+    void delete();
+}
