@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ユーザー情報一覧</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+
+<body>
+    <header class="app-header">
+        <div class="app-header__inner">
+            <a class="brand" th:href="@{/user/list}">Company Management</a>
+            <span>ユーザー管理</span>
+        </div>
+    </header>
+    <main class="container">
+        <div class="page-heading">
+            <div>
+                <p class="eyebrow">USER MANAGEMENT</p>
+                <h1>ユーザー情報一覧</h1>
+            </div>
+            <a class="button button--primary" th:href="@{/user/create}">新規登録</a>
+        </div>
+
+        <div class="alert alert--success" th:if="${message}" th:text="${message}"></div>
+
+        <section class="panel">
+            <form method="get" th:action="@{/user/list}" th:object="${search}">
+                <div class="search-grid">
+                    <label>
+                        <span>ユーザーID</span>
+                        <input type="text" th:field="*{userId}" placeholder="ユーザーIDを入力">
+                    </label>
+                    <label>
+                        <span>氏名</span>
+                        <input type="text" th:field="*{userNm}" placeholder="氏名を入力">
+                    </label>
+                </div>
+                <div class="button-row">
+                    <a class="button button--secondary" th:href="@{/user/list}">リセット</a>
+                    <button class="button button--primary" type="submit">検索</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="panel table-panel">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ユーザーID</th>
+                        <th>氏名</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:if="${#lists.isEmpty(userList)}">
+                        <td class="empty-state" colspan="2">該当するユーザーがありません。</td>
+                    </tr>
+                    <tr th:each="user : ${userList}">
+                        <td th:text="${user.userId}"></td>
+                        <td th:text="${user.userNm}"></td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(userList)}">
+                        <td class="empty-state" colspan="2">該当するユーザーがありません。</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+</body>
+
+</html>

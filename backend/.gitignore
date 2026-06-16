@@ -32,4 +32,5 @@ build/
 ### VS Code ###
 .vscode/
 # Runtime Upload Files
-uploads/
+# Runtime Upload Files
+

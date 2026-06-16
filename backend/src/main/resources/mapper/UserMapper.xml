@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.company.backend.mapper.UserMapper">
+
+    <select id="searchUsers"
+        parameterType="com.company.backend.dto.UserSearchDto"
+        resultType="com.company.backend.entity.User"> SELECT U.USER_ID, U.USER_NM FROM USER_TBL U
+        WHERE U.USER_DEL_FLG = '0' <if test="userId != null and userId != ''"> AND U.USER_ID LIKE
+        CONCAT('%', #{userId}, '%') </if>
+
+        <if test="userNm != null and userNm != ''"> AND U.USER_NM
+        LIKE CONCAT('%', #{userNm}, '%') </if> ORDER BY U.USER_ID </select>
+
+    <select id="getDetail"
+        parameterType="long"
+        resultType="com.company.backend.entity.User"> SELECT U.USER_ID, U.USER_NM FROM USER_TBL U
+        WHERE U.USER_DEL_FLG = '0' AND U.USER_ID = #{userId} </select>
+</mapper>

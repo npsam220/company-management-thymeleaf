@@ -5,22 +5,33 @@ import java.util.stream.IntStream;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.company.backend.dto.CustSearchDto;
+import com.company.backend.entity.Bank;
+import com.company.backend.entity.Cust;
+import com.company.backend.service.BankService;
 import com.company.backend.service.CustService;
+
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/cust")
 public class CustViewController {
     private final CustService custService;
+    private final BankService bankService;
     private static final int DEFAULT_PAGE_SIZE = 10;
 
-    public CustViewController(CustService custService) {
+    public CustViewController(CustService custService, BankService bankService) {
         this.custService = custService;
+        this.bankService = bankService;
     }
 
     @GetMapping({ "", "/", "/list" })
@@ -48,5 +59,67 @@ public class CustViewController {
                 IntStream.rangeClosed(1, totalPages).boxed().toList());
 
         return "cust/list";
+    }
+
+    @GetMapping("/detail/{custId}")
+    public String detail(@PathVariable Long custId, Model model) {
+        Cust cust = custService.getCustDetail(custId);
+        if (cust == null) {
+            return "redirect:/cust/list";
+        }
+        model.addAttribute("cust", cust);
+        model.addAttribute("bankMasters", bankService.findAll());
+        return "cust/detail";
+    }
+
+    @PostMapping("/update")
+    public String update(
+            @Valid @ModelAttribute Cust cust,
+            BindingResult bindingResult,
+            Model model,
+            RedirectAttributes redirectAttributes) {
+
+        if (bindingResult.hasErrors()) {
+
+            model.addAttribute("bankMasters",
+                    bankService.findAll());
+
+            return "cust/detail";
+        }
+
+        validateBankMaster(cust, bindingResult);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("bankMasters", bankService.findAll());
+            return "cust/detail";
+        }
+
+        try {
+            custService.update(cust);
+        } catch (IllegalArgumentException e) {
+            bindingResult.reject("cust.update.failed", e.getMessage());
+            model.addAttribute("bankMasters", bankService.findAll());
+            return "cust/detail";
+        }
+
+        redirectAttributes.addFlashAttribute(
+                "message",
+                "顧客情報を更新しました。");
+
+        return "redirect:/cust/detail/" + cust.getCustId();
+    }
+
+    private void validateBankMaster(Cust cust, BindingResult bindingResult) {
+        if (!"01".equals(cust.getCustType())) {
+            return;
+        }
+        if (cust.getBankCd() == null || cust.getBankCd().isBlank()
+                || cust.getBankChrcd() == null || cust.getBankChrcd().isBlank()) {
+            bindingResult.rejectValue("bankCd", "bank.required", "銀行マスタから銀行情報を選択してください。");
+            return;
+        }
+        Bank bank = bankService.findByCode(cust.getBankCd(), cust.getBankChrcd());
+        if (bank == null) {
+            bindingResult.rejectValue("bankCd", "bank.notFound", "銀行マスタに存在しない銀行情報です。");
+        }
     }
 }

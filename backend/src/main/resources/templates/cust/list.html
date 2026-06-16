@@ -70,30 +70,28 @@
                 </div>
             </form>
 
-            <div class="cust-spec-result-head">
-                <label for="pageSize">表示件数</label>
-                <select id="pageSize" name="pageSize" form="page-size-form" onchange="this.form.submit()">
-                    <option th:each="size : ${T(java.util.List).of(10, 30, 50)}"
-                        th:value="${size}"
-                        th:text="${size}"
-                        th:selected="${size == pageSize}"></option>
-                </select>
-                <span class="cust-spec-result-count">
-                    全<strong th:text="${totalCount}">0</strong>件
-                </span>
+            <div class="cust-spec-result-count">
+                全<strong th:text="${totalCount}">0</strong>件
             </div>
-
-            <form id="page-size-form" method="get" th:action="@{/cust/list}">
-                <input type="hidden" name="custNm" th:value="${search.custNm}">
-                <input type="hidden" name="managerNm" th:value="${search.managerNm}">
-                <input type="hidden" name="custInforSecurity" th:value="${search.custInforSecurity}">
-                <input type="hidden" name="custDispatch" th:value="${search.custDispatch}">
-            </form>
 
             <div class="table-scroll">
                 <table class="cust-spec-table">
                     <thead>
                         <tr>
+                            <th class="cust-spec-page-size">
+                                <form method="get" th:action="@{/cust/list}">
+                                    <label for="pageSize">表示件数</label>
+                                    <select id="pageSize" name="pageSize" onchange="this.form.submit()">
+                                        <option th:each="size : ${T(java.util.List).of(10, 30, 50)}" th:value="${size}"
+                                            th:text="${size}" th:selected="${size == pageSize}"></option>
+                                    </select>
+                                    <input type="hidden" name="custNm" th:value="${search.custNm}">
+                                    <input type="hidden" name="managerNm" th:value="${search.managerNm}">
+                                    <input type="hidden" name="custInforSecurity"
+                                        th:value="${search.custInforSecurity}">
+                                    <input type="hidden" name="custDispatch" th:value="${search.custDispatch}">
+                                </form>
+                            </th>
                             <th>No.</th>
                             <th>取引先名</th>
                             <th>電話番号</th>
@@ -103,6 +101,10 @@
                     </thead>
                     <tbody>
                         <tr th:each="cust, stat : ${custList}">
+                            <td class="cust-spec-action-cell">
+                                <a class="button button--spec"
+                                    th:href="@{/cust/detail/{custId}(custId=${cust.custId})}">編集</a>
+                            </td>
                             <td th:text="${(currentPage - 1) * pageSize + stat.index + 1}"></td>
                             <td th:text="${cust.custNm}"></td>
                             <td th:text="${cust.custPhone}"></td>
@@ -110,7 +112,7 @@
                             <td th:text="${cust.custAddress}"></td>
                         </tr>
                         <tr th:if="${#lists.isEmpty(custList)}">
-                            <td class="empty-state" colspan="5">該当する取引先がありません。</td>
+                            <td class="empty-state" colspan="6">該当する取引先がありません。</td>
                         </tr>
                     </tbody>
                 </table>
@@ -119,8 +121,7 @@
             <nav class="pagination" th:if="${totalPages > 1}">
                 <a th:classappend="${currentPage == 1} ? 'disabled'"
                     th:href="@{/cust/list(page=${currentPage - 1},pageSize=${pageSize},custNm=${search.custNm},managerNm=${search.managerNm},custInforSecurity=${search.custInforSecurity},custDispatch=${search.custDispatch})}">&lt;&lt;</a>
-                <a th:each="number : ${pageNumbers}"
-                    th:classappend="${number == currentPage} ? 'active'"
+                <a th:each="number : ${pageNumbers}" th:classappend="${number == currentPage} ? 'active'"
                     th:text="${number}"
                     th:href="@{/cust/list(page=${number},pageSize=${pageSize},custNm=${search.custNm},managerNm=${search.managerNm},custInforSecurity=${search.custInforSecurity},custDispatch=${search.custDispatch})}"></a>
                 <a th:classappend="${currentPage == totalPages} ? 'disabled'"

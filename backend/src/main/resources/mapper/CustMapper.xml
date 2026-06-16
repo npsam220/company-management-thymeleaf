@@ -1,71 +1,159 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.company.backend.mapper.CustMapper">
 
-    <sql id="custSearchConditions">
-        C.CUST_DELFLG = '0'
+    <sql id="custSearchConditions"> C.CUST_DELFLG = '0' <if test="custNm != null and custNm != ''">
+        AND C.CUST_NM LIKE CONCAT('%', #{custNm}, '%') </if>
 
-        <if test="custNm != null and custNm != ''">
-            AND C.CUST_NM LIKE CONCAT('%', #{custNm}, '%')
-        </if>
+        <if
+            test="custInforSecurity != null and custInforSecurity != ''"> AND C.CUST_INFOR_SECURITY
+        = #{custInforSecurity} </if>
 
-        <if test="custInforSecurity != null and custInforSecurity != ''">
-            AND C.CUST_INFOR_SECURITY = #{custInforSecurity}
-        </if>
+        <if test="custDispatch != null and custDispatch != ''"> AND
+        C.CUST_DISPATCH = #{custDispatch} </if>
 
-        <if test="custDispatch != null and custDispatch != ''">
-            AND C.CUST_DISPATCH = #{custDispatch}
-        </if>
-
-        <if test="managerNm != null and managerNm != ''">
-            AND EXISTS (
-                SELECT 1
-                FROM MANG_TBL M
-                WHERE M.MANAGER_CUST_ID = C.CUST_ID
-                  AND M.MANAGER_NM LIKE CONCAT('%', #{managerNm}, '%')
-            )
-        </if>
+        <if test="managerNm != null and managerNm != ''"> AND
+        EXISTS ( SELECT 1 FROM MANG_TBL M WHERE M.MANAGER_CUST_ID = C.CUST_ID AND M.MANAGER_NM LIKE
+        CONCAT('%', #{managerNm}, '%') ) </if>
     </sql>
 
     <select id="searchCust"
         parameterType="com.company.backend.dto.CustSearchDto"
-        resultType="com.company.backend.entity.Cust">
-        SELECT
-            C.CUST_ID,
-            C.CUST_NM,
-            C.CUST_KN,
-            C.CUST_PHONE,
-            C.CUST_ADDRESS,
-            C.CUST_INFOR_SECURITY,
-            C.CUST_DISPATCH,
-            M.MANAGER_NM
-        FROM CUST_TBL C
-        LEFT JOIN (
-            SELECT
-                MANAGER_CUST_ID,
-                GROUP_CONCAT(
-                    MANAGER_NM
-                    ORDER BY MANAGER_CD, MANAGER_CHRCD
-                    SEPARATOR '、'
-                ) AS MANAGER_NM
-            FROM MANG_TBL
-            GROUP BY MANAGER_CUST_ID
-        ) M ON M.MANAGER_CUST_ID = C.CUST_ID
-        WHERE
-            <include refid="custSearchConditions" />
-        ORDER BY C.CUST_NM
-        LIMIT #{offset}, #{pageSize}
-    </select>
+        resultType="com.company.backend.entity.Cust"> SELECT C.CUST_ID, C.CUST_NM, C.CUST_KN,
+        C.CUST_PHONE, C.CUST_ADDRESS, C.CUST_INFOR_SECURITY, C.CUST_DISPATCH, M.MANAGER_NM FROM
+        CUST_TBL C LEFT JOIN ( SELECT MANAGER_CUST_ID, GROUP_CONCAT( MANAGER_NM ORDER BY MANAGER_CD,
+        MANAGER_CHRCD SEPARATOR '、' ) AS MANAGER_NM FROM MANG_TBL GROUP BY MANAGER_CUST_ID ) M ON
+        M.MANAGER_CUST_ID = C.CUST_ID WHERE <include refid="custSearchConditions" /> ORDER BY
+        C.CUST_NM LIMIT #{offset}, #{pageSize} </select>
 
     <select id="countCust"
         parameterType="com.company.backend.dto.CustSearchDto"
-        resultType="int">
-        SELECT COUNT(*)
-        FROM CUST_TBL C
-        WHERE
-            <include refid="custSearchConditions" />
+        resultType="int"> SELECT COUNT(*) FROM CUST_TBL C WHERE <include
+            refid="custSearchConditions" />
+    </select>
+    <select id="getCustDetail"
+        parameterType="long"
+        resultType="com.company.backend.entity.Cust"> SELECT C.CUST_ID, C.CUST_NM, C.CUST_KN,
+        C.CUST_WEB, C.CUST_POSTNO, C.CUST_ADDRESS, C.CUST_PHONE, C.CUST_FAX, C.CUST_MONEY,
+        C.CUST_TYPE, C.CUST_STARTDT, C.CUST_INVOICE_NO, C.CUST_INFOR_SECURITY, C.CUST_DISPATCH,
+        C.CUST_COMPANYREP, C.CUST_RMK1, C.CUST_GETDT, C.CUST_GETCDT, C.CUST_ORDERGDT, C.CUST_PAYDT,
+        C.CUST_CLOSEDT, C.CUST_ORDERDT, C.BANK_CD, C.BANK_CHRCD, C.CUST_BANK_NM,
+        C.CUST_BRANCH_CD AS CUST_BRANCH_NM,
+        C.CUST_DEPOSITTYPE, C.CUST_BRANCHCD, C.CUST_ACCOUNTNO, C.CUST_NOMINEE, C.CUST_RMK2,
+        C.CUST_CRD_USR, C.CUST_CRD_DT, C.CUST_UPD_USR, C.CUST_UPD_DT, M.MANAGER_NM, M.MANAGER_PNO,
+        M.MANAGER_MAIL, M.MANAGER_JOB, M.MANAGER_RMK FROM CUST_TBL C LEFT JOIN ( SELECT
+        MANAGER_CUST_ID, GROUP_CONCAT( MANAGER_NM ORDER BY MANAGER_CD, MANAGER_CHRCD SEPARATOR '、' )
+        AS MANAGER_NM, GROUP_CONCAT( MANAGER_PNO ORDER BY MANAGER_CD, MANAGER_CHRCD SEPARATOR '、' )
+        AS MANAGER_PNO, GROUP_CONCAT( MANAGER_MAIL ORDER BY MANAGER_CD, MANAGER_CHRCD SEPARATOR '、'
+        ) AS MANAGER_MAIL, GROUP_CONCAT( MANAGER_JOB ORDER BY MANAGER_CD, MANAGER_CHRCD SEPARATOR
+        '、' ) AS MANAGER_JOB, GROUP_CONCAT( COALESCE(MANAGER_RMK, '') ORDER BY MANAGER_CD,
+        MANAGER_CHRCD SEPARATOR '、' ) AS MANAGER_RMK FROM MANG_TBL GROUP BY MANAGER_CUST_ID ) M ON
+        M.MANAGER_CUST_ID = C.CUST_ID WHERE C.CUST_DELFLG = '0' AND C.CUST_ID = #{custId} </select>
+
+    <select id="getManagersByCustId"
+        parameterType="long"
+        resultType="com.company.backend.entity.Manager">
+        SELECT
+            MANAGER_CD,
+            MANAGER_CHRCD,
+            MANAGER_NM,
+            MANAGER_CUST_ID,
+            MANAGER_PNO,
+            MANAGER_JOB,
+            MANAGER_RMK,
+            MANAGER_MAIL
+        FROM MANG_TBL
+        WHERE MANAGER_CUST_ID = #{custId}
+        ORDER BY MANAGER_CD, MANAGER_CHRCD
     </select>
 
+    <update id="update" parameterType="com.company.backend.entity.Cust">
+        UPDATE CUST_TBL
+        SET
+            CUST_NM = #{custNm},
+            CUST_KN = #{custKn},
+            CUST_WEB = #{custWeb},
+            CUST_POSTNO = #{custPostno},
+            CUST_ADDRESS = #{custAddress},
+            CUST_PHONE = #{custPhone},
+            CUST_FAX = #{custFax},
+            CUST_MONEY = #{custMoney},
+            CUST_TYPE = #{custType},
+            CUST_STARTDT = #{custStartdt},
+            CUST_INVOICE_NO = #{custInvoiceNo},
+            CUST_INFOR_SECURITY = #{custInforSecurity},
+            CUST_DISPATCH = #{custDispatch},
+            CUST_COMPANYREP = #{custCompanyrep},
+            CUST_RMK1 = #{custRmk1},
+            CUST_GETDT = #{custGetdt},
+            CUST_GETCDT = #{custGetcdt},
+            CUST_ORDERGDT = #{custOrdergdt},
+            CUST_PAYDT = #{custPaydt},
+            CUST_CLOSEDT = #{custClosedt},
+            CUST_ORDERDT = #{custOrderdt},
+            BANK_CD = #{bankCd},
+            BANK_CHRCD = #{bankChrcd},
+            CUST_BANK_NM = #{custBankNm},
+            CUST_BRANCH_CD = #{custBranchNm},
+            CUST_DEPOSITTYPE = #{custDeposittype},
+            CUST_BRANCHCD = #{custBranchcd},
+            CUST_ACCOUNTNO = #{custAccountno},
+            CUST_NOMINEE = #{custNominee},
+            CUST_RMK2 = #{custRmk2},
+            CUST_UPD_DT = CURRENT_TIMESTAMP
+        WHERE CUST_ID = #{custId}
+          AND CUST_DELFLG = '0'
+    </update>
+
+    <update id="updateManager" parameterType="com.company.backend.entity.Manager">
+        UPDATE MANG_TBL
+        SET
+            MANAGER_NM = #{managerNm},
+            MANAGER_PNO = #{managerPno},
+            MANAGER_MAIL = #{managerMail},
+            MANAGER_JOB = #{managerJob},
+            MANAGER_RMK = #{managerRmk},
+            MANAGER_UPD_DT = CURRENT_TIMESTAMP
+        WHERE MANAGER_CD = #{managerCd}
+          AND MANAGER_CHRCD = #{managerChrcd}
+          AND MANAGER_CUST_ID = #{managerCustId}
+    </update>
+
+    <insert id="insertManager" parameterType="com.company.backend.entity.Manager">
+        INSERT INTO MANG_TBL (
+            MANAGER_CD,
+            MANAGER_CHRCD,
+            MANAGER_NM,
+            MANAGER_CUST_ID,
+            MANAGER_PNO,
+            MANAGER_JOB,
+            MANAGER_RMK,
+            MANAGER_MAIL,
+            MANAGER_CRD_USR,
+            MANAGER_CRD_DT,
+            MANAGER_UPD_USR,
+            MANAGER_UPD_DT
+        ) VALUES (
+            #{managerCd},
+            #{managerChrcd},
+            #{managerNm},
+            #{managerCustId},
+            #{managerPno},
+            #{managerJob},
+            #{managerRmk},
+            #{managerMail},
+            'system',
+            CURRENT_TIMESTAMP,
+            'system',
+            CURRENT_TIMESTAMP
+        )
+    </insert>
+
+    <delete id="deleteManager" parameterType="com.company.backend.entity.Manager">
+        DELETE FROM MANG_TBL
+        WHERE MANAGER_CD = #{managerCd}
+          AND MANAGER_CHRCD = #{managerChrcd}
+          AND MANAGER_CUST_ID = #{managerCustId}
+    </delete>
 </mapper>

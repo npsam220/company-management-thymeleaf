@@ -294,26 +294,11 @@ label > span {
     background: #9fc5ea;
 }
 
-.cust-spec-result-head {
-    min-height: 58px;
-    padding: 9px 22px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: var(--spec-gray);
-    font-size: 18px;
-    font-weight: 700;
-}
-
-.cust-spec-result-head select {
-    width: 82px;
-    padding: 7px 10px;
-    border-color: #999;
-    background: #fff;
-}
-
 .cust-spec-result-count {
-    margin-left: auto;
+    min-height: 38px;
+    padding: 10px 22px 4px;
+    background: var(--spec-gray);
+    text-align: right;
     font-size: 14px;
     font-weight: 500;
 }
@@ -335,23 +320,49 @@ label > span {
 }
 
 .cust-spec-table th:nth-child(1) {
-    width: 7%;
+    width: 14%;
 }
 
 .cust-spec-table th:nth-child(2) {
-    width: 28%;
+    width: 7%;
 }
 
 .cust-spec-table th:nth-child(3) {
-    width: 16%;
+    width: 24%;
 }
 
 .cust-spec-table th:nth-child(4) {
-    width: 20%;
+    width: 15%;
 }
 
 .cust-spec-table th:nth-child(5) {
-    width: 29%;
+    width: 18%;
+}
+
+.cust-spec-table th:nth-child(6) {
+    width: 22%;
+}
+
+.cust-spec-page-size form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.cust-spec-page-size label {
+    white-space: nowrap;
+}
+
+.cust-spec-page-size select {
+    width: 64px;
+    padding: 6px 8px;
+    border-color: #999;
+    background: #fff;
+}
+
+.cust-spec-action-cell {
+    background: inherit;
 }
 
 .cust-spec-table td {
@@ -512,6 +523,14 @@ input[readonly] {
     background: #fff1f2;
 }
 
+.field-error {
+    display: block;
+    margin-top: 6px;
+    color: #991b1b;
+    font-size: 12px;
+    font-weight: 600;
+}
+
 .result-summary {
     margin-bottom: 12px;
     color: var(--muted);
@@ -629,6 +648,313 @@ td small {
     display: inline-block;
 }
 
+.cust-detail-page .container {
+    width: min(1220px, calc(100% - 24px));
+}
+
+.cust-detail-shell {
+    color: #111;
+    background: #f5f5f5;
+}
+
+.cust-detail-actions {
+    padding: 18px 24px 14px;
+    display: flex;
+    justify-content: center;
+    gap: 46px;
+}
+
+.cust-detail-section {
+    margin: 0;
+}
+
+.cust-detail-section__title {
+    min-height: 50px;
+    margin: 0;
+    padding: 9px 14px;
+    border: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #263238;
+    background: #c7c7c7;
+    font-size: 24px;
+}
+
+.cust-detail-section__arrow {
+    color: #fff;
+    font-size: 27px;
+    line-height: 1;
+}
+
+.cust-detail-basic,
+.cust-detail-payment {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.cust-detail-list {
+    margin: 0;
+}
+
+.cust-detail-list + .cust-detail-list {
+    border-left: 1px solid #d3d3d3;
+}
+
+.cust-detail-item {
+    min-height: 54px;
+    display: grid;
+    grid-template-columns: 118px minmax(0, 1fr);
+}
+
+.cust-detail-item dt {
+    margin: 0;
+    padding: 15px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    background: #dedede;
+    font-weight: 700;
+    text-align: right;
+}
+
+.cust-detail-item dd {
+    min-width: 0;
+    margin: 0;
+    padding: 15px 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    overflow-wrap: anywhere;
+    font-weight: 600;
+}
+
+.cust-detail-item input,
+.cust-detail-item select,
+.cust-detail-item textarea,
+.cust-detail-manager-table input,
+.cust-detail-manager-table select {
+    border-color: #aaa;
+    background: #fff;
+}
+
+.cust-detail-item textarea {
+    min-height: 60px;
+    resize: vertical;
+}
+
+.cust-detail-input-with-unit,
+.cust-detail-date-rule {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.cust-detail-date-rule {
+    grid-template-columns: minmax(90px, 1fr) minmax(100px, 1fr) minmax(0, auto);
+}
+
+.cust-detail-specified-day {
+    display: grid;
+    grid-template-columns: 84px auto;
+    align-items: center;
+    gap: 8px;
+}
+
+.cust-detail-specified-day[hidden] {
+    display: none;
+}
+
+.cust-detail-manager-table input,
+.cust-detail-manager-table select {
+    min-width: 0;
+    padding: 8px 9px;
+}
+
+.cust-detail-item--remarks {
+    min-height: 78px;
+}
+
+.cust-detail-manager-wrap {
+    padding: 38px 18px 18px;
+    background: #f5f5f5;
+}
+
+.cust-detail-manager-add {
+    margin: 0 0 22px 16px;
+}
+
+.cust-detail-required {
+    margin-left: 3px;
+    color: var(--red);
+}
+
+.cust-detail-manager-remove {
+    min-width: 46px;
+    padding: 7px 12px;
+    font-size: 20px;
+}
+
+.cust-detail-manager-table {
+    table-layout: fixed;
+}
+
+.cust-detail-manager-table th {
+    padding: 10px 14px;
+    border-bottom: 1px solid #444;
+    color: #111;
+    background: transparent;
+    font-size: 15px;
+    text-align: center;
+}
+
+.cust-detail-manager-table td {
+    padding: 15px 14px;
+    border-bottom: 1px solid #d2d2d2;
+    font-weight: 600;
+    text-align: center;
+    overflow-wrap: anywhere;
+}
+
+.cust-detail-manager-table th:nth-child(1) {
+    width: 16%;
+}
+
+.cust-detail-manager-table th:nth-child(2) {
+    width: 17%;
+}
+
+.cust-detail-manager-table th:nth-child(3) {
+    width: 24%;
+}
+
+.cust-detail-manager-table th:nth-child(4) {
+    width: 16%;
+}
+
+.cust-detail-manager-table th:nth-child(5) {
+    width: 22%;
+}
+
+.cust-detail-manager-table th:nth-child(6) {
+    width: 5%;
+}
+
+.cust-detail-manager-table tbody tr:hover {
+    background: transparent;
+}
+
+.cust-detail-empty {
+    color: var(--muted);
+}
+
+.cust-detail-payment {
+    min-height: 360px;
+}
+
+.cust-detail-master-locked {
+    color: #475569;
+    background: #e5e7eb !important;
+}
+
+.cust-detail-bank-search {
+    min-width: 64px;
+    padding: 9px 14px;
+}
+
+.cust-detail-bank-dialog {
+    width: min(980px, calc(100% - 32px));
+    max-height: 80vh;
+    padding: 0;
+    border: 1px solid #94a3b8;
+    border-radius: 8px;
+    color: #1f2937;
+    background: #fff;
+}
+
+.cust-detail-bank-dialog::backdrop {
+    background: rgba(15, 23, 42, .52);
+}
+
+.cust-detail-bank-dialog__header {
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #d9d9d9;
+}
+
+.cust-detail-bank-dialog__header h2 {
+    margin: 0;
+    font-size: 22px;
+}
+
+.cust-detail-bank-dialog__header button {
+    width: 40px;
+    padding: 4px;
+    border: 0;
+    font-size: 24px;
+    background: transparent;
+}
+
+.cust-detail-bank-dialog__filter {
+    padding: 16px 18px;
+    display: grid;
+    grid-template-columns: 130px minmax(240px, 1fr);
+    align-items: center;
+    gap: 12px;
+}
+
+.cust-detail-bank-dialog__filter label {
+    font-weight: 700;
+}
+
+.cust-detail-bank-dialog__body {
+    max-height: 55vh;
+    padding: 0 18px 18px;
+    overflow: auto;
+}
+
+.cust-detail-bank-table {
+    min-width: 760px;
+}
+
+.cust-detail-bank-table th,
+.cust-detail-bank-table td {
+    padding: 11px 10px;
+    border-bottom: 1px solid #d7dde5;
+    text-align: left;
+}
+
+.cust-detail-bank-table th {
+    position: sticky;
+    top: 0;
+    color: #fff;
+    background: var(--navy);
+}
+
+.cust-detail-bank-select {
+    padding: 6px 12px;
+    color: #fff;
+    background: #3f8f62;
+}
+
+.cust-detail-payment-spacer {
+    min-height: 143px;
+}
+
+.cust-detail-audit {
+    padding: 30px 50px 20px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    background: #f5f5f5;
+    text-align: center;
+}
+
+.cust-detail-audit p {
+    margin: 0;
+}
+
 @media (max-width: 800px) {
     .search-grid,
     .form-grid {
@@ -670,5 +996,35 @@ td small {
 
     .panel {
         padding: 18px;
+    }
+
+    .cust-detail-basic,
+    .cust-detail-payment {
+        grid-template-columns: 1fr;
+    }
+
+    .cust-detail-list + .cust-detail-list {
+        border-top: 1px solid #d3d3d3;
+        border-left: 0;
+    }
+
+    .cust-detail-payment-spacer {
+        display: none;
+    }
+
+    .cust-detail-bank-dialog__filter {
+        grid-template-columns: 1fr;
+    }
+
+    .cust-detail-manager-wrap {
+        overflow-x: auto;
+    }
+
+    .cust-detail-manager-table {
+        min-width: 760px;
+    }
+
+    .cust-detail-audit {
+        grid-template-columns: repeat(2, 1fr);
     }
 }

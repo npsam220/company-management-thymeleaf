@@ -1,15 +1,12 @@
 package com.company.backend.controller;
 
-import com.company.backend.config.UploadProperties;
-import com.company.backend.dto.StaffSearchDto;
-import com.company.backend.entity.Staff;
-import com.company.backend.service.StaffService;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.stream.IntStream;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,9 +18,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.company.backend.config.UploadProperties;
+import com.company.backend.dto.StaffSearchDto;
+import com.company.backend.entity.Staff;
+import com.company.backend.service.StaffService;
 
 @Controller
 @RequestMapping("/staff")
@@ -41,7 +43,7 @@ public class StaffViewController {
         this.uploadProperties = uploadProperties;
     }
 
-    @GetMapping({"", "/", "/list"})
+    @GetMapping({ "", "/", "/list" })
     public String list(
             @ModelAttribute("search") StaffSearchDto search,
             @RequestParam(defaultValue = "1") int page,
@@ -86,6 +88,7 @@ public class StaffViewController {
             @ModelAttribute Staff staff,
             @RequestParam(required = false) MultipartFile photoFile,
             @RequestParam(required = false) MultipartFile resumeFile,
+            Model model,
             RedirectAttributes redirectAttributes) throws IOException {
 
         Staff current = staffService.getStaffDetail(staff.getStaffId());
@@ -95,9 +98,17 @@ public class StaffViewController {
 
         staff.setStaffPhoto(current.getStaffPhoto());
         staff.setStaffResume(current.getStaffResume());
+
+        String validationMessage = validate(staff);
+        if (validationMessage != null) {
+            model.addAttribute("errorMessage", validationMessage);
+            addFormAttributes(model, staff, "スタッフ情報更新", "/staff/update");
+            return "staff/detail";
+        }
+
         saveUploads(staff, photoFile, resumeFile);
         staffService.update(staff);
-
+        // 更新後のリダイレクト先を詳細ページに変更
         redirectAttributes.addFlashAttribute("message", "スタッフ情報を更新しました。");
         return "redirect:/staff/detail/" + staff.getStaffId();
     }

@@ -1,48 +1,97 @@
 package com.company.backend.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
+
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
 
 public class Cust {
 
+    @NotNull(message = "取引先IDは必須です。")
     private Long custId;
+    @NotBlank(message = "取引先名は必須です。")
+    @Size(max = 128, message = "取引先名は128文字以内で入力してください。")
     private String custNm;
+    @Size(max = 128, message = "カナは128文字以内で入力してください。")
     private String custKn;
+    @Size(max = 15, message = "電話番号は15文字以内で入力してください。")
     private String custPhone;
     private String custDelflg;
+    @Size(max = 128, message = "FAXは128文字以内で入力してください。")
     private String custFax;
+    @Size(max = 128, message = "Webサイトは128文字以内で入力してください。")
     private String custWeb;
+    @Size(max = 10, message = "郵便番号は10文字以内で入力してください。")
     private String custPostno;
+    @Size(max = 128, message = "住所は128文字以内で入力してください。")
     private String custAddress;
+    @Pattern(regexp = "|01|02|03", message = "取引先の種別を正しく選択してください。")
     private String custType;
+    @PositiveOrZero(message = "資本金は0以上で入力してください。")
     private Long custMoney;
+    @Size(max = 25, message = "登録番号は25文字以内で入力してください。")
     private String custInvoiceNo;
+    @Pattern(regexp = "|01|02", message = "Pマークを正しく選択してください。")
     private String custInforSecurity;
+    @Pattern(regexp = "|01|02", message = "派遣資格を正しく選択してください。")
     private String custDispatch;
     private Integer custEmpnum;
-    private LocalDateTime custStartdt;
+    private LocalDate custStartdt;
     private Integer custAnnualsale;
+    @Size(max = 128, message = "自社担当者は128文字以内で入力してください。")
     private String custCompanyrep;
+    @Size(max = 256, message = "備考は256文字以内で入力してください。")
     private String custRmk1;
+    @Size(max = 256, message = "備考は256文字以内で入力してください。")
     private String custRmk2;
+    @Pattern(regexp = "|01|02|03|05", message = "支払締日を正しく選択してください。")
     private String custClosedt;
+    @Pattern(regexp = "|01|02|03", message = "支払月を正しく選択してください。")
     private String custPaydt;
+    @Min(value = 1, message = "支払指定日は1から31で入力してください。")
+    @Max(value = 31, message = "支払指定日は1から31で入力してください。")
     private Integer custOrderdt;
+    @Pattern(regexp = "|01|02|03", message = "入金月を正しく選択してください。")
     private String custGetdt;
+    @Pattern(regexp = "|01|02|03|05", message = "入金締日を正しく選択してください。")
     private String custGetcdt;
+    @Min(value = 1, message = "入金指定日は1から31で入力してください。")
+    @Max(value = 31, message = "入金指定日は1から31で入力してください。")
     private Integer custOrdergdt;
     private String bankCd;
     private String bankChrcd;
+    @Size(max = 20, message = "銀行名は20文字以内で入力してください。")
     private String custBankNm;
     private String custBranchCd;
+    @Size(max = 20, message = "支店名は20文字以内で入力してください。")
+    private String custBranchNm;
+    @Pattern(regexp = "|01|02", message = "預金種別を正しく選択してください。")
     private String custDeposittype;
+    @Size(max = 20, message = "支店番号は20文字以内で入力してください。")
     private String custBranchcd;
+    @Size(max = 20, message = "口座番号は20文字以内で入力してください。")
     private String custAccountno;
+    @Size(max = 128, message = "名義人は128文字以内で入力してください。")
     private String custNominee;
     private String custCrdUsr;
     private LocalDateTime custCrdDt;
     private String custUpdUsr;
     private LocalDateTime custUpdDt;
     private String managerNm;
+    private String managerPno;
+    private String managerMail;
+    private String managerJob;
+    private String managerRmk;
+    @Valid
+    private List<Manager> managers;
 
     public Long getCustId() {
         return custId;
@@ -164,11 +213,11 @@ public class Cust {
         this.custEmpnum = custEmpnum;
     }
 
-    public LocalDateTime getCustStartdt() {
+    public LocalDate getCustStartdt() {
         return custStartdt;
     }
 
-    public void setCustStartdt(LocalDateTime custStartdt) {
+    public void setCustStartdt(LocalDate custStartdt) {
         this.custStartdt = custStartdt;
     }
 
@@ -284,6 +333,14 @@ public class Cust {
         this.custBranchCd = custBranchCd;
     }
 
+    public String getCustBranchNm() {
+        return custBranchNm;
+    }
+
+    public void setCustBranchNm(String custBranchNm) {
+        this.custBranchNm = custBranchNm;
+    }
+
     public String getCustDeposittype() {
         return custDeposittype;
     }
@@ -354,5 +411,45 @@ public class Cust {
 
     public void setManagerNm(String managerNm) {
         this.managerNm = managerNm;
+    }
+
+    public String getManagerPno() {
+        return managerPno;
+    }
+
+    public void setManagerPno(String managerPno) {
+        this.managerPno = managerPno;
+    }
+
+    public String getManagerMail() {
+        return managerMail;
+    }
+
+    public void setManagerMail(String managerMail) {
+        this.managerMail = managerMail;
+    }
+
+    public String getManagerJob() {
+        return managerJob;
+    }
+
+    public void setManagerJob(String managerJob) {
+        this.managerJob = managerJob;
+    }
+
+    public String getManagerRmk() {
+        return managerRmk;
+    }
+
+    public void setManagerRmk(String managerRmk) {
+        this.managerRmk = managerRmk;
+    }
+
+    public List<Manager> getManagers() {
+        return managers;
+    }
+
+    public void setManagers(List<Manager> managers) {
+        this.managers = managers;
     }
 }
