@@ -38,122 +38,67 @@
         C.CUST_WEB, C.CUST_POSTNO, C.CUST_ADDRESS, C.CUST_PHONE, C.CUST_FAX, C.CUST_MONEY,
         C.CUST_TYPE, C.CUST_STARTDT, C.CUST_INVOICE_NO, C.CUST_INFOR_SECURITY, C.CUST_DISPATCH,
         C.CUST_COMPANYREP, C.CUST_RMK1, C.CUST_GETDT, C.CUST_GETCDT, C.CUST_ORDERGDT, C.CUST_PAYDT,
-        C.CUST_CLOSEDT, C.CUST_ORDERDT, C.BANK_CD, C.BANK_CHRCD, C.CUST_BANK_NM,
-        C.CUST_BRANCH_CD AS CUST_BRANCH_NM,
-        C.CUST_DEPOSITTYPE, C.CUST_BRANCHCD, C.CUST_ACCOUNTNO, C.CUST_NOMINEE, C.CUST_RMK2,
-        C.CUST_CRD_USR, C.CUST_CRD_DT, C.CUST_UPD_USR, C.CUST_UPD_DT, M.MANAGER_NM, M.MANAGER_PNO,
-        M.MANAGER_MAIL, M.MANAGER_JOB, M.MANAGER_RMK FROM CUST_TBL C LEFT JOIN ( SELECT
-        MANAGER_CUST_ID, GROUP_CONCAT( MANAGER_NM ORDER BY MANAGER_CD, MANAGER_CHRCD SEPARATOR '、' )
-        AS MANAGER_NM, GROUP_CONCAT( MANAGER_PNO ORDER BY MANAGER_CD, MANAGER_CHRCD SEPARATOR '、' )
-        AS MANAGER_PNO, GROUP_CONCAT( MANAGER_MAIL ORDER BY MANAGER_CD, MANAGER_CHRCD SEPARATOR '、'
-        ) AS MANAGER_MAIL, GROUP_CONCAT( MANAGER_JOB ORDER BY MANAGER_CD, MANAGER_CHRCD SEPARATOR
-        '、' ) AS MANAGER_JOB, GROUP_CONCAT( COALESCE(MANAGER_RMK, '') ORDER BY MANAGER_CD,
-        MANAGER_CHRCD SEPARATOR '、' ) AS MANAGER_RMK FROM MANG_TBL GROUP BY MANAGER_CUST_ID ) M ON
-        M.MANAGER_CUST_ID = C.CUST_ID WHERE C.CUST_DELFLG = '0' AND C.CUST_ID = #{custId} </select>
+        C.CUST_CLOSEDT, C.CUST_ORDERDT, C.BANK_CD, C.BANK_CHRCD, C.CUST_BANK_NM, C.CUST_BRANCH_CD AS
+        CUST_BRANCH_NM, C.CUST_DEPOSITTYPE, C.CUST_BRANCHCD, C.CUST_ACCOUNTNO, C.CUST_NOMINEE,
+        C.CUST_RMK2, C.CUST_CRD_USR, C.CUST_CRD_DT, C.CUST_UPD_USR, C.CUST_UPD_DT, M.MANAGER_NM,
+        M.MANAGER_PNO, M.MANAGER_MAIL, M.MANAGER_JOB, M.MANAGER_RMK FROM CUST_TBL C LEFT JOIN (
+        SELECT MANAGER_CUST_ID, GROUP_CONCAT( MANAGER_NM ORDER BY MANAGER_CD, MANAGER_CHRCD
+        SEPARATOR '、' ) AS MANAGER_NM, GROUP_CONCAT( MANAGER_PNO ORDER BY MANAGER_CD, MANAGER_CHRCD
+        SEPARATOR '、' ) AS MANAGER_PNO, GROUP_CONCAT( MANAGER_MAIL ORDER BY MANAGER_CD,
+        MANAGER_CHRCD SEPARATOR '、' ) AS MANAGER_MAIL, GROUP_CONCAT( MANAGER_JOB ORDER BY
+        MANAGER_CD, MANAGER_CHRCD SEPARATOR '、' ) AS MANAGER_JOB, GROUP_CONCAT(
+        COALESCE(MANAGER_RMK, '') ORDER BY MANAGER_CD, MANAGER_CHRCD SEPARATOR '、' ) AS MANAGER_RMK
+        FROM MANG_TBL GROUP BY MANAGER_CUST_ID ) M ON M.MANAGER_CUST_ID = C.CUST_ID WHERE
+        C.CUST_DELFLG = '0' AND C.CUST_ID = #{custId} </select>
 
     <select id="getManagersByCustId"
         parameterType="long"
-        resultType="com.company.backend.entity.Manager">
-        SELECT
-            MANAGER_CD,
-            MANAGER_CHRCD,
-            MANAGER_NM,
-            MANAGER_CUST_ID,
-            MANAGER_PNO,
-            MANAGER_JOB,
-            MANAGER_RMK,
-            MANAGER_MAIL
-        FROM MANG_TBL
-        WHERE MANAGER_CUST_ID = #{custId}
-        ORDER BY MANAGER_CD, MANAGER_CHRCD
-    </select>
+        resultType="com.company.backend.entity.Manager"> SELECT MANAGER_CD, MANAGER_CHRCD,
+        MANAGER_NM, MANAGER_CUST_ID, MANAGER_PNO, MANAGER_JOB, MANAGER_RMK, MANAGER_MAIL FROM
+        MANG_TBL WHERE MANAGER_CUST_ID = #{custId} ORDER BY MANAGER_CD, MANAGER_CHRCD </select>
 
-    <update id="update" parameterType="com.company.backend.entity.Cust">
-        UPDATE CUST_TBL
-        SET
-            CUST_NM = #{custNm},
-            CUST_KN = #{custKn},
-            CUST_WEB = #{custWeb},
-            CUST_POSTNO = #{custPostno},
-            CUST_ADDRESS = #{custAddress},
-            CUST_PHONE = #{custPhone},
-            CUST_FAX = #{custFax},
-            CUST_MONEY = #{custMoney},
-            CUST_TYPE = #{custType},
-            CUST_STARTDT = #{custStartdt},
-            CUST_INVOICE_NO = #{custInvoiceNo},
-            CUST_INFOR_SECURITY = #{custInforSecurity},
-            CUST_DISPATCH = #{custDispatch},
-            CUST_COMPANYREP = #{custCompanyrep},
-            CUST_RMK1 = #{custRmk1},
-            CUST_GETDT = #{custGetdt},
-            CUST_GETCDT = #{custGetcdt},
-            CUST_ORDERGDT = #{custOrdergdt},
-            CUST_PAYDT = #{custPaydt},
-            CUST_CLOSEDT = #{custClosedt},
-            CUST_ORDERDT = #{custOrderdt},
-            BANK_CD = #{bankCd},
-            BANK_CHRCD = #{bankChrcd},
-            CUST_BANK_NM = #{custBankNm},
-            CUST_BRANCH_CD = #{custBranchNm},
-            CUST_DEPOSITTYPE = #{custDeposittype},
-            CUST_BRANCHCD = #{custBranchcd},
-            CUST_ACCOUNTNO = #{custAccountno},
-            CUST_NOMINEE = #{custNominee},
-            CUST_RMK2 = #{custRmk2},
-            CUST_UPD_DT = CURRENT_TIMESTAMP
-        WHERE CUST_ID = #{custId}
-          AND CUST_DELFLG = '0'
-    </update>
+    <update id="update" parameterType="com.company.backend.entity.Cust"> UPDATE CUST_TBL SET CUST_NM
+        = #{custNm}, CUST_KN = #{custKn}, CUST_WEB = #{custWeb}, CUST_POSTNO = #{custPostno},
+        CUST_ADDRESS = #{custAddress}, CUST_PHONE = #{custPhone}, CUST_FAX = #{custFax}, CUST_MONEY
+        = #{custMoney}, CUST_TYPE = #{custType}, CUST_STARTDT = #{custStartdt}, CUST_INVOICE_NO =
+        #{custInvoiceNo}, CUST_INFOR_SECURITY = #{custInforSecurity}, CUST_DISPATCH =
+        #{custDispatch}, CUST_COMPANYREP = #{custCompanyrep}, CUST_RMK1 = #{custRmk1}, CUST_GETDT =
+        #{custGetdt}, CUST_GETCDT = #{custGetcdt}, CUST_ORDERGDT = #{custOrdergdt}, CUST_PAYDT =
+        #{custPaydt}, CUST_CLOSEDT = #{custClosedt}, CUST_ORDERDT = #{custOrderdt}, BANK_CD =
+        #{bankCd}, BANK_CHRCD = #{bankChrcd}, CUST_BANK_NM = #{custBankNm}, CUST_BRANCH_CD =
+        #{custBranchNm}, CUST_DEPOSITTYPE = #{custDeposittype}, CUST_BRANCHCD = #{custBranchcd},
+        CUST_ACCOUNTNO = #{custAccountno}, CUST_NOMINEE = #{custNominee}, CUST_RMK2 = #{custRmk2},
+        CUST_UPD_DT = CURRENT_TIMESTAMP WHERE CUST_ID = #{custId} AND CUST_DELFLG = '0' </update>
 
-    <update id="updateManager" parameterType="com.company.backend.entity.Manager">
-        UPDATE MANG_TBL
-        SET
-            MANAGER_NM = #{managerNm},
-            MANAGER_PNO = #{managerPno},
-            MANAGER_MAIL = #{managerMail},
-            MANAGER_JOB = #{managerJob},
-            MANAGER_RMK = #{managerRmk},
-            MANAGER_UPD_DT = CURRENT_TIMESTAMP
-        WHERE MANAGER_CD = #{managerCd}
-          AND MANAGER_CHRCD = #{managerChrcd}
-          AND MANAGER_CUST_ID = #{managerCustId}
-    </update>
+    <update id="updateManager" parameterType="com.company.backend.entity.Manager"> UPDATE MANG_TBL
+        SET MANAGER_NM = #{managerNm}, MANAGER_PNO = #{managerPno}, MANAGER_MAIL = #{managerMail},
+        MANAGER_JOB = #{managerJob}, MANAGER_RMK = #{managerRmk}, MANAGER_UPD_DT = CURRENT_TIMESTAMP
+        WHERE MANAGER_CD = #{managerCd} AND MANAGER_CHRCD = #{managerChrcd} AND MANAGER_CUST_ID =
+        #{managerCustId} </update>
 
-    <insert id="insertManager" parameterType="com.company.backend.entity.Manager">
-        INSERT INTO MANG_TBL (
-            MANAGER_CD,
-            MANAGER_CHRCD,
-            MANAGER_NM,
-            MANAGER_CUST_ID,
-            MANAGER_PNO,
-            MANAGER_JOB,
-            MANAGER_RMK,
-            MANAGER_MAIL,
-            MANAGER_CRD_USR,
-            MANAGER_CRD_DT,
-            MANAGER_UPD_USR,
-            MANAGER_UPD_DT
-        ) VALUES (
-            #{managerCd},
-            #{managerChrcd},
-            #{managerNm},
-            #{managerCustId},
-            #{managerPno},
-            #{managerJob},
-            #{managerRmk},
-            #{managerMail},
-            'system',
-            CURRENT_TIMESTAMP,
-            'system',
-            CURRENT_TIMESTAMP
-        )
-    </insert>
+    <insert id="insertManager" parameterType="com.company.backend.entity.Manager"> INSERT INTO
+        MANG_TBL ( MANAGER_CD, MANAGER_CHRCD, MANAGER_NM, MANAGER_CUST_ID, MANAGER_PNO, MANAGER_JOB,
+        MANAGER_RMK, MANAGER_MAIL, MANAGER_CRD_USR, MANAGER_CRD_DT, MANAGER_UPD_USR, MANAGER_UPD_DT
+        ) VALUES ( #{managerCd}, #{managerChrcd}, #{managerNm}, #{managerCustId}, #{managerPno},
+        #{managerJob}, #{managerRmk}, #{managerMail}, 'system', CURRENT_TIMESTAMP, 'system',
+        CURRENT_TIMESTAMP ) </insert>
 
-    <delete id="deleteManager" parameterType="com.company.backend.entity.Manager">
-        DELETE FROM MANG_TBL
-        WHERE MANAGER_CD = #{managerCd}
-          AND MANAGER_CHRCD = #{managerChrcd}
-          AND MANAGER_CUST_ID = #{managerCustId}
-    </delete>
+    <delete id="deleteManager" parameterType="com.company.backend.entity.Manager"> DELETE FROM
+        MANG_TBL WHERE MANAGER_CD = #{managerCd} AND MANAGER_CHRCD = #{managerChrcd} AND
+        MANAGER_CUST_ID = #{managerCustId} </delete>
+    <insert id="create" parameterType="com.company.backend.entity.Cust" useGeneratedKeys="true"
+        keyProperty="custId" keyColumn="CUST_ID"> INSERT INTO CUST_TBL ( CUST_NM, CUST_KN, CUST_WEB,
+        CUST_POSTNO, CUST_ADDRESS, CUST_PHONE, CUST_FAX, CUST_MONEY, CUST_TYPE, CUST_STARTDT,
+        CUST_INVOICE_NO, CUST_INFOR_SECURITY, CUST_DISPATCH, CUST_COMPANYREP, CUST_RMK1, CUST_GETDT,
+        CUST_GETCDT, CUST_ORDERGDT, CUST_PAYDT, CUST_CLOSEDT, CUST_ORDERDT, BANK_CD, BANK_CHRCD,
+        CUST_BANK_NM, CUST_BRANCH_CD, CUST_DEPOSITTYPE, CUST_BRANCHCD, CUST_ACCOUNTNO, CUST_NOMINEE,
+        CUST_RMK2, CUST_DELFLG, CUST_CRD_USR, CUST_CRD_DT, CUST_UPD_USR, CUST_UPD_DT ) VALUES (
+        #{custNm}, #{custKn}, #{custWeb}, #{custPostno}, #{custAddress}, #{custPhone}, #{custFax},
+        #{custMoney}, #{custType}, #{custStartdt}, #{custInvoiceNo}, #{custInforSecurity},
+        #{custDispatch}, #{custCompanyrep}, #{custRmk1}, #{custGetdt}, #{custGetcdt},
+        #{custOrdergdt}, #{custPaydt}, #{custClosedt}, #{custOrderdt}, #{bankCd}, #{bankChrcd},
+        #{custBankNm}, #{custBranchNm}, #{custDeposittype}, #{custBranchcd}, #{custAccountno},
+        #{custNominee}, #{custRmk2}, '0', 'system', CURRENT_TIMESTAMP, 'system', CURRENT_TIMESTAMP ) </insert>
+    <update id="delete" parameterType="Long"> UPDATE CUST_TBL SET CUST_DELFLG = '1', CUST_UPD_USR =
+        'system', CUST_UPD_DT = CURRENT_TIMESTAMP WHERE CUST_ID = #{custId} AND CUST_DELFLG = '0' </update>
 </mapper>

@@ -362,7 +362,20 @@ label > span {
 }
 
 .cust-spec-action-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
     background: inherit;
+    white-space: nowrap;
+}
+
+.cust-spec-action-cell .button--spec {
+    min-width: 72px;
+}
+
+.cust-spec-action-cell form {
+    margin: 0;
 }
 
 .cust-spec-table td {
@@ -939,7 +952,7 @@ td small {
 }
 
 .cust-detail-payment-spacer {
-    min-height: 143px;
+    min-height: 108px;
 }
 
 .cust-detail-audit {

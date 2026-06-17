@@ -8,14 +8,12 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 
 public class Cust {
 
-    @NotNull(message = "取引先IDは必須です。")
     private Long custId;
     @NotBlank(message = "取引先名は必須です。")
     @Size(max = 128, message = "取引先名は128文字以内で入力してください。")

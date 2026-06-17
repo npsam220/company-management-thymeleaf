@@ -79,6 +79,9 @@ public class CustViewController {
             Model model,
             RedirectAttributes redirectAttributes) {
 
+        if (cust.getCustId() == null) {
+            bindingResult.rejectValue("custId", "custId.required", "取引先IDは必須です。");
+        }
         if (bindingResult.hasErrors()) {
 
             model.addAttribute("bankMasters",
@@ -121,5 +124,60 @@ public class CustViewController {
         if (bank == null) {
             bindingResult.rejectValue("bankCd", "bank.notFound", "銀行マスタに存在しない銀行情報です。");
         }
+    }
+
+    @GetMapping("/create")
+    public String createForm(Model model) {
+        addFormAttributes(model, new Cust(), "取引先新規登録", "/cust/create");
+        return "cust/create";
+    }
+
+    private void addFormAttributes(Model model, Cust cust, String pageTitle, String formAction) {
+        model.addAttribute("cust", cust);
+        model.addAttribute("pageTitle", pageTitle);
+        model.addAttribute("formAction", formAction);
+        model.addAttribute("bankMasters", bankService.findAll());
+    }
+
+    @PostMapping("/create")
+    public String create(
+            @Valid @ModelAttribute Cust cust,
+            BindingResult bindingResult,
+            Model model,
+            RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            addFormAttributes(model, cust, "取引先新規登録", "/cust/create");
+            return "cust/create";
+        }
+        validateBankMaster(cust, bindingResult);
+        if (bindingResult.hasErrors()) {
+            addFormAttributes(model, cust, "取引先新規登録", "/cust/create");
+            return "cust/create";
+        }
+
+        try {
+            custService.create(cust);
+        } catch (IllegalArgumentException e) {
+            bindingResult.reject("cust.create.failed", e.getMessage());
+            addFormAttributes(model, cust, "取引先新規登録", "/cust/create");
+            return "cust/create";
+        }
+
+        redirectAttributes.addFlashAttribute("message", "取引先を登録しました。");
+        return "redirect:/cust/list";
+    }
+
+    @PostMapping("/delete/{custId}")
+    public String delete(
+            @PathVariable Long custId,
+            RedirectAttributes redirectAttributes) {
+
+        custService.deleteCust(custId);
+
+        redirectAttributes.addFlashAttribute(
+                "message",
+                "取引先を削除しました。");
+
+        return "redirect:/cust/list";
     }
 }

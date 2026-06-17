@@ -104,6 +104,9 @@
                             <td class="cust-spec-action-cell">
                                 <a class="button button--spec"
                                     th:href="@{/cust/detail/{custId}(custId=${cust.custId})}">編集</a>
+                                <form method="post" th:action="@{/cust/delete/{custId}(custId=${cust.custId})}">
+                                    <button class="button button--spec" type="submit">削除</button>
+                                </form>
                             </td>
                             <td th:text="${(currentPage - 1) * pageSize + stat.index + 1}"></td>
                             <td th:text="${cust.custNm}"></td>

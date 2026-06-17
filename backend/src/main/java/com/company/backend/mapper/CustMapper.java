@@ -24,10 +24,12 @@ public interface CustMapper {
 
     int deleteManager(Manager manager);
 
-    void delete();
+    int delete(Long custId);
 
     Cust getCustDetail(Long custId);
 
     List<Manager> getManagersByCustId(Long custId);
+
+    int create(Cust cust);
 
 }

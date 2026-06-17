@@ -1,18 +1,11 @@
 package com.company.backend.controller;
 
-import com.company.backend.dto.CommonDto;
-import com.company.backend.dto.StaffDetailDto;
-import com.company.backend.dto.StaffSearchDto;
-import com.company.backend.dto.StaffSearchResponseDto;
-import com.company.backend.entity.Staff;
-import com.company.backend.service.StaffService;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
-import net.coobird.thumbnailator.Thumbnails;
-import org.springframework.web.bind.annotation.CrossOrigin;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,7 +16,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
 import com.company.backend.config.UploadProperties;
+import com.company.backend.dto.CommonDto;
+import com.company.backend.dto.StaffSearchDto;
+import com.company.backend.dto.StaffSearchResponseDto;
+import com.company.backend.entity.Staff;
+import com.company.backend.service.StaffService;
+
+import net.coobird.thumbnailator.Thumbnails;
 
 @RestController
 @RequestMapping("/api/staff")

@@ -138,7 +138,9 @@ document.addEventListener("DOMContentLoaded", () => {
     openBankSearch.addEventListener("click", () => {
         bankSearchKeyword.value = "";
         filterBankRows();
+        // モーダルを表示してからフォーカスを当てないと、モーダル外の要素にフォーカスが当たってしまう
         bankSearchDialog.showModal();
+        // フォーカスを当てる前にモーダルが表示される必要があるため、setTimeoutで遅らせる
         bankSearchKeyword.focus();
     });
     closeBankSearch?.addEventListener("click", () => bankSearchDialog.close());

@@ -149,4 +149,41 @@ public class CustService {
         return manager.getManagerCd() + ":" + manager.getManagerChrcd();
     }
 
+    @Transactional
+    public void create(Cust cust) {
+        applyBankMaster(cust);
+        // 1. 取引先を登録し、DBで自動採番されたCUST_IDをcustへ戻す。
+        int createCustCount = custMapper.create(cust);
+        if (createCustCount != 1) {
+            throw new IllegalArgumentException("取引先を登録できませんでした。");
+        }
+        if (cust.getCustId() == null) {
+            throw new IllegalArgumentException("取引先IDを採番できませんでした。");
+        }
+        // 取得畫面送來的担当者。
+        // 如果畫面沒有任何担当者，改用空的 List，避免發生 NullPointerException。
+        List<Manager> submittedManagers = cust.getManagers() == null
+                ? Collections.emptyList()
+                : cust.getManagers();
+        // 2. 更新担当者
+        // 更新 MANG_TBL 的基本資料。
+        for (Manager manager : submittedManagers) {
+            manager.setManagerCustId(cust.getCustId());
+            normalizeManager(manager);
+            manager.setManagerCd("M" + UUID.randomUUID().toString().replace("-", ""));
+            manager.setManagerChrcd("01");
+            int insertedManagerCount = custMapper.insertManager(manager);
+            if (insertedManagerCount != 1) {
+                throw new IllegalArgumentException("担当者を登録できませんでした。");
+            }
+        }
+    }
+
+    public void deleteCust(Long custId) {
+        int deletedCount = custMapper.delete(custId);
+        if (deletedCount != 1) {
+            throw new IllegalArgumentException("削除対象の取引先が存在しません。");
+        }
+    }
+
 }

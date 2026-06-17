@@ -3,6 +3,7 @@ package com.company.backend.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -105,5 +106,35 @@ class CustServiceTests {
         assertThatThrownBy(() -> custService.update(cust))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("担当者情報が最新ではありません");
+    }
+
+    @Test
+    void createUsesGeneratedCustIdForManagers() {
+        Cust cust = new Cust();
+        Manager manager = new Manager();
+        manager.setManagerNm("佐藤");
+        cust.setManagers(List.of(manager));
+
+        doAnswer(invocation -> {
+            Cust insertedCust = invocation.getArgument(0);
+            insertedCust.setCustId(42L);
+            return 1;
+        }).when(custMapper).create(cust);
+        when(custMapper.insertManager(any(Manager.class))).thenReturn(1);
+
+        custService.create(cust);
+
+        ArgumentCaptor<Manager> captor = ArgumentCaptor.forClass(Manager.class);
+        verify(custMapper).insertManager(captor.capture());
+        assertThat(captor.getValue().getManagerCustId()).isEqualTo(42L);
+    }
+
+    @Test
+    void deleteThrowsWhenCustWasNotDeleted() {
+        when(custMapper.delete(1L)).thenReturn(0);
+
+        assertThatThrownBy(() -> custService.deleteCust(1L))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("削除対象の取引先");
     }
 }
