@@ -78,7 +78,6 @@ CREATE TABLE `CUST_TBL` (
   `CUST_BANK_NM` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `CUST_BRANCH_CD` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `CUST_DEPOSITTYPE` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `CUST_BRANCHCD` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `CUST_ACCOUNTNO` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `CUST_NOMINEE` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `CUST_CRD_USR` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,

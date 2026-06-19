@@ -1,11 +1,12 @@
 package com.company.backend.mapper;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
+
 import com.company.backend.dto.CommonDto;
-import com.company.backend.dto.StaffDetailDto;
 import com.company.backend.dto.StaffSearchDto;
 import com.company.backend.entity.Staff;
-import java.util.List;
-import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface StaffMapper {

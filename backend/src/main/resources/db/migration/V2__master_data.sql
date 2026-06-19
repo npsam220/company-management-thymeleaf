@@ -12,4 +12,9 @@ VALUES
 ('STAFF_SALESSTATUS','02','待機中','admin',NOW(),'admin',NOW()),
 ('STAFF_SALESSTATUS','03','休職中','admin',NOW(),'admin',NOW()),
 ('STAFF_SALESSTATUS','04','退職','admin',NOW(),'admin',NOW()),
-('STAFF_SALESSTATUS','05','退職済','admin',NOW(),'admin',NOW());
+('STAFF_SALESSTATUS','05','退職済','admin',NOW(),'admin',NOW()),
+
+('CUST_DEPOSITTYPE','01','普通預金','admin',NOW(),'admin',NOW()),
+('CUST_DEPOSITTYPE','02','当座預金','admin',NOW(),'admin',NOW()),
+('CUST_DEPOSITTYPE','03','貯蓄預金','admin',NOW(),'admin',NOW()),
+('CUST_DEPOSITTYPE','04','その他','admin',NOW(),'admin',NOW());

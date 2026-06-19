@@ -121,15 +121,34 @@
                 </table>
             </div>
 
-            <nav class="pagination" th:if="${totalPages > 1}">
-                <a th:classappend="${currentPage == 1} ? 'disabled'"
-                    th:href="@{/cust/list(page=${currentPage - 1},pageSize=${pageSize},custNm=${search.custNm},managerNm=${search.managerNm},custInforSecurity=${search.custInforSecurity},custDispatch=${search.custDispatch})}">&lt;&lt;</a>
-                <a th:each="number : ${pageNumbers}" th:classappend="${number == currentPage} ? 'active'"
-                    th:text="${number}"
-                    th:href="@{/cust/list(page=${number},pageSize=${pageSize},custNm=${search.custNm},managerNm=${search.managerNm},custInforSecurity=${search.custInforSecurity},custDispatch=${search.custDispatch})}"></a>
-                <a th:classappend="${currentPage == totalPages} ? 'disabled'"
-                    th:href="@{/cust/list(page=${currentPage + 1},pageSize=${pageSize},custNm=${search.custNm},managerNm=${search.managerNm},custInforSecurity=${search.custInforSecurity},custDispatch=${search.custDispatch})}">&gt;&gt;</a>
-            </nav>
+            <div class="pagination-wrap" th:if="${totalPages > 1}">
+                <nav class="pagination">
+                    <a th:classappend="${currentPage == 1} ? 'disabled'"
+                        th:href="@{/cust/list(page=${currentPage - 1},pageSize=${pageSize},custNm=${search.custNm},managerNm=${search.managerNm},custInforSecurity=${search.custInforSecurity},custDispatch=${search.custDispatch})}">&lt;&lt;</a>
+                    <a th:each="number : ${pageNumbers}" th:if="${totalPages <= 10 or number <= 5}"
+                        th:classappend="${number == currentPage} ? 'active'" th:text="${number}"
+                        th:href="@{/cust/list(page=${number},pageSize=${pageSize},custNm=${search.custNm},managerNm=${search.managerNm},custInforSecurity=${search.custInforSecurity},custDispatch=${search.custDispatch})}"></a>
+                    <span class="pagination-ellipsis" th:if="${totalPages > 10}">...</span>
+                    <a th:each="number : ${pageNumbers}" th:if="${totalPages > 10 and number > totalPages - 5}"
+                        th:classappend="${number == currentPage} ? 'active'" th:text="${number}"
+                        th:href="@{/cust/list(page=${number},pageSize=${pageSize},custNm=${search.custNm},managerNm=${search.managerNm},custInforSecurity=${search.custInforSecurity},custDispatch=${search.custDispatch})}"></a>
+                    <a th:classappend="${currentPage == totalPages} ? 'disabled'"
+                        th:href="@{/cust/list(page=${currentPage + 1},pageSize=${pageSize},custNm=${search.custNm},managerNm=${search.managerNm},custInforSecurity=${search.custInforSecurity},custDispatch=${search.custDispatch})}">&gt;&gt;</a>
+                </nav>
+
+                <form class="pagination-jump" method="get" th:action="@{/cust/list}">
+                    <label for="custPageJump">ページ</label>
+                    <select id="custPageJump" name="page" onchange="this.form.submit()">
+                        <option th:each="number : ${#numbers.sequence(1, totalPages)}" th:value="${number}"
+                            th:text="${number}" th:selected="${number == currentPage}"></option>
+                    </select>
+                    <input type="hidden" name="pageSize" th:value="${pageSize}">
+                    <input type="hidden" name="custNm" th:value="${search.custNm}">
+                    <input type="hidden" name="managerNm" th:value="${search.managerNm}">
+                    <input type="hidden" name="custInforSecurity" th:value="${search.custInforSecurity}">
+                    <input type="hidden" name="custDispatch" th:value="${search.custDispatch}">
+                </form>
+            </div>
         </section>
     </main>
 </body>

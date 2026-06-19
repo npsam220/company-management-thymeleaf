@@ -12,3 +12,4 @@ uploads/*
 !uploads/.gitkeep
 work/
 outputs/
+backend/.m2repo/

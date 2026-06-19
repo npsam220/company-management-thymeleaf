@@ -3,210 +3,304 @@
 
 <body>
     <div th:fragment="fields">
-        <section class="panel form-section">
-            <h2>基本情報</h2>
-            <div class="form-grid">
-                <label>
-                    <span>社員番号</span>
-                    <input id="staffNo" type="text" th:field="*{staffNo}" readonly placeholder="契約日から自動採番">
-                </label>
-                <label class="required">
-                    <span>氏名</span>
-                    <input type="text" th:field="*{staffNm}" required>
-                </label>
-                <label>
-                    <span>フリガナ</span>
-                    <input type="text" th:field="*{staffKn}">
-                </label>
-                <label>
-                    <span>アルファベット</span>
-                    <input type="text" th:field="*{staffAlphabet}">
-                </label>
-                <label class="required">
-                    <span>性別</span>
-                    <select th:field="*{staffSex}" required>
-                        <option value="">選択してください</option>
-                        <option value="01">男</option>
-                        <option value="02">女</option>
-                    </select>
-                </label>
-                <label class="required">
-                    <span>生年月日</span>
-                    <input id="staffBirthdt" type="date" name="staffBirthdt"
-                        th:value="${staff.staffBirthdt == null ? '' : #temporals.format(staff.staffBirthdt, 'yyyy-MM-dd')}"
-                        required>
-                </label>
-                <label>
-                    <span>年齢</span>
-                    <input id="staffAge" type="number" th:field="*{staffAge}" min="0" readonly>
-                </label>
-                <label class="required">
-                    <span>国籍</span>
-                    <select th:field="*{staffCountry}" required>
-                        <option value="">選択してください</option>
-                        <option value="01">中国</option>
-                        <option value="02">日本</option>
-                        <option value="03">その他</option>
-                    </select>
-                </label>
-                <label>
-                    <span>出身地</span>
-                    <input type="text" th:field="*{staffBirthplace}">
-                </label>
-                <label class="required">
-                    <span>スタッフ区分</span>
-                    <select id="staffCls" th:field="*{staffCls}" required>
-                        <option value="">選択してください</option>
-                        <option th:each="item : ${staffClsList}" th:value="${item.comCd}" th:text="${item.comContent1}">
-                        </option>
-                    </select>
-                </label>
-                <label>
-                    <span>所属会社</span>
-                    <input id="staffCompany" type="text" th:field="*{staffCompany}">
-                </label>
-                <label class="required">
-                    <span>営業ステータス</span>
-                    <select th:field="*{staffSalesstatus}" required>
-                        <option value="">選択してください</option>
-                        <option th:each="item : ${salesStatusList}" th:value="${item.comCd}"
-                            th:text="${item.comContent1}"></option>
-                    </select>
-                </label>
-            </div>
-        </section>
-
-        <section class="panel form-section">
-            <h2>連絡先</h2>
-            <div class="form-grid">
-                <label>
-                    <span>郵便番号</span>
-                    <div class="input-action">
-                        <input id="staffPostno" type="text" th:field="*{staffPostno}" placeholder="1234567">
-                        <button id="postalSearch" class="button button--small button--secondary"
-                            type="button">住所検索</button>
+        <section class="staff-detail-section">
+            <h2 class="staff-detail-section__title">基本情報</h2>
+            <div class="staff-detail-grid">
+                <dl class="staff-detail-list">
+                    <div class="staff-detail-item">
+                        <dt><span class="staff-detail-required">社員番号</span></dt>
+                        <dd>
+                            <input id="staffNo" type="text" th:field="*{staffNo}" readonly placeholder="契約日から自動採番">
+                        </dd>
                     </div>
-                </label>
-                <label class="span-2">
-                    <span>住所</span>
-                    <input id="staffAddress" type="text" th:field="*{staffAddress}">
-                </label>
-                <label>
-                    <span>メール</span>
-                    <input type="email" th:field="*{staffMail}">
-                </label>
-                <label>
-                    <span>電話番号</span>
-                    <input type="tel" th:field="*{staffPhoneno}">
-                </label>
-                <label>
-                    <span>緊急連絡先</span>
-                    <input type="tel" th:field="*{staffEmergencycall}">
-                </label>
-                <label>
-                    <span>最寄駅</span>
-                    <input type="text" th:field="*{staffNeareststation}">
-                </label>
+                    <div class="staff-detail-item">
+                        <dt><span class="staff-detail-required">氏名</span></dt>
+                        <dd>
+                            <input type="text" th:field="*{staffNm}" required>
+                        </dd>
+                    </div>
+                    <div class="staff-detail-item">
+                        <dt>氏名(カナ)</dt>
+                        <dd>
+                            <input type="text" th:field="*{staffKn}">
+                        </dd>
+                    </div>
+                    <div class="staff-detail-item">
+                        <dt>氏名(英字)</dt>
+                        <dd>
+                            <input type="text" th:field="*{staffAlphabet}">
+                        </dd>
+                    </div>
+                    <div class="staff-detail-item">
+                        <dt>郵便番号</dt>
+                        <dd>
+                            <input id="staffPostno" type="text" th:field="*{staffPostno}" placeholder="1234567">
+                        </dd>
+                    </div>
+                    <div class="staff-detail-item">
+                        <dt>現住所</dt>
+                        <dd>
+                            <input id="staffAddress" type="text" th:field="*{staffAddress}">
+                        </dd>
+                    </div>
+                </dl>
+
+                <dl class="staff-detail-list">
+                    <div class="staff-detail-item">
+                        <dt><span class="staff-detail-required">営業ステータス</span></dt>
+                        <dd>
+                            <div class="staff-detail-pair-row">
+                                <select th:field="*{staffSalesstatus}" required>
+                                    <option value=""></option>
+                                    <option th:each="item : ${salesStatusList}" th:value="${item.comCd}"
+                                        th:text="${item.comContent1}"></option>
+                                </select>
+                                <div class="staff-detail-inline-pair">
+                                    <span class="staff-detail-inline-label staff-detail-required">性別</span>
+                                    <div class="segmented-control staff-detail-segmented">
+                                        <label>
+                                            <input type="radio" th:field="*{staffSex}" value="01" required>
+                                            <span>男</span>
+                                        </label>
+                                        <label>
+                                            <input type="radio" th:field="*{staffSex}" value="02" required>
+                                            <span>女</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </dd>
+                    </div>
+                    <div class="staff-detail-item">
+                        <dt>年齢</dt>
+                        <dd>
+                            <div class="staff-detail-pair-row">
+                                <div class="staff-detail-with-unit">
+                                    <input id="staffAge" type="number" th:field="*{staffAge}" min="0" readonly>
+                                    <span>歳</span>
+                                </div>
+                                <div class="staff-detail-inline-pair">
+                                    <span class="staff-detail-inline-label staff-detail-required">生年月日</span>
+                                    <input id="staffBirthdt" type="date" name="staffBirthdt"
+                                        th:value="${staff.staffBirthdt == null ? '' : #temporals.format(staff.staffBirthdt, 'yyyy-MM-dd')}"
+                                        required>
+                                </div>
+                            </div>
+                        </dd>
+                    </div>
+                    <div class="staff-detail-item">
+                        <dt><span class="staff-detail-required">国籍</span></dt>
+                        <dd>
+                            <div class="staff-detail-pair-row">
+                                <select th:field="*{staffCountry}" required>
+                                    <option value=""></option>
+                                    <option value="01">中国</option>
+                                    <option value="02">日本</option>
+                                    <option value="03">その他</option>
+                                </select>
+                                <div class="staff-detail-inline-pair">
+                                    <span class="staff-detail-inline-label">出身地</span>
+                                    <input type="text" th:field="*{staffBirthplace}">
+                                </div>
+                            </div>
+                        </dd>
+                    </div>
+                    <div class="staff-detail-item">
+                        <dt>メール</dt>
+                        <dd>
+                            <input type="email" th:field="*{staffMail}">
+                        </dd>
+                    </div>
+                    <div class="staff-detail-item">
+                        <dt>携帯電話</dt>
+                        <dd>
+                            <div class="staff-detail-pair-row">
+                                <input type="tel" th:field="*{staffPhoneno}">
+                                <div class="staff-detail-inline-pair">
+                                    <span class="staff-detail-inline-label">緊急連絡</span>
+                                    <input type="tel" th:field="*{staffEmergencycall}">
+                                </div>
+                            </div>
+                        </dd>
+                    </div>
+                    <div class="staff-detail-item">
+                        <dt>最寄駅</dt>
+                        <dd>
+                            <input type="text" th:field="*{staffNeareststation}">
+                        </dd>
+                    </div>
+                </dl>
             </div>
+
+            <dl class="staff-detail-wide-list">
+                <div class="staff-detail-item staff-detail-item--remarks">
+                    <dt>備考</dt>
+                    <dd>
+                        <textarea th:field="*{staffRmk1}" rows="3"></textarea>
+                    </dd>
+                </div>
+            </dl>
         </section>
 
-        <section class="panel form-section">
-            <h2>社内・契約情報</h2>
-            <div class="form-grid">
-                <label>
-                    <span>部署</span>
-                    <select th:field="*{staffGroup}">
-                        <option value="">選択してください</option>
-                        <option value="01">高速開発部</option>
-                        <option value="02">システム開発部</option>
-                        <option value="03">製品開発部</option>
-                        <option value="04">管理部</option>
-                        <option value="05">営業部</option>
-                    </select>
-                </label>
-                <label>
-                    <span>役職</span>
-                    <select th:field="*{staffPost}">
-                        <option value="">選択してください</option>
-                        <option value="01">一般社員</option>
-                        <option value="02">役員</option>
-                        <option value="03">部長</option>
-                        <option value="04">事業部長</option>
-                    </select>
-                </label>
-                <label class="required">
-                    <span>契約日</span>
-                    <input id="staffIndt" type="date" name="staffIndt"
-                        th:value="${staff.staffIndt == null ? '' : #temporals.format(staff.staffIndt, 'yyyy-MM-dd')}"
-                        required>
-                </label>
-                <label>
-                    <span>退職日</span>
-                    <input type="date" name="staffOutdt"
-                        th:value="${staff.staffOutdt == null ? '' : #temporals.format(staff.staffOutdt, 'yyyy-MM-dd')}">
-                </label>
-                <label>
-                    <span>マイナンバー</span>
-                    <input type="text" th:field="*{staffMyno}">
-                </label>
-                <label>
-                    <span>在留カード番号</span>
-                    <input type="text" th:field="*{staffResidencecard}">
-                </label>
-                <label>
-                    <span>在留資格</span>
-                    <select th:field="*{staffRestype}">
-                        <option value="">選択してください</option>
-                        <option value="01">技術・人文知識・国際業務</option>
-                        <option value="02">高度専門職</option>
-                        <option value="03">永住者</option>
-                        <option value="04">留学（在籍審中）</option>
-                        <option value="05">転勤（社内転勤）</option>
-                    </select>
-                </label>
-                <label>
-                    <span>在留期限</span>
-                    <input type="date" name="staffCardenddt"
-                        th:value="${staff.staffCardenddt == null ? '' : #temporals.format(staff.staffCardenddt, 'yyyy-MM-dd')}">
-                </label>
-                <label>
-                    <span>保険番号</span>
-                    <input type="text" th:field="*{staffInsuranceno}">
-                </label>
-                <label>
-                    <span>保険種類</span>
-                    <select th:field="*{staffInsurancetype}">
-                        <option value="">選択してください</option>
-                        <option value="01">国民</option>
-                        <option value="02">社会</option>
-                    </select>
-                </label>
-            </div>
-        </section>
+        <section class="staff-detail-section">
+            <h2 class="staff-detail-section__title">詳細情報</h2>
+            <div class="staff-detail-grid">
+                <dl class="staff-detail-list">
+                    <div class="staff-detail-item">
+                        <dt><span class="staff-detail-required">スタッフ区分</span></dt>
+                        <dd>
+                            <select id="staffCls" th:field="*{staffCls}" required>
+                                <option value=""></option>
+                                <option th:each="item : ${staffClsList}" th:value="${item.comCd}"
+                                    th:text="${item.comContent1}"></option>
+                            </select>
+                        </dd>
+                    </div>
+                    <div class="staff-detail-item">
+                        <dt>役職</dt>
+                        <dd>
+                            <select th:field="*{staffPost}">
+                                <option value=""></option>
+                                <option value="01">一般社員</option>
+                                <option value="02">役員</option>
+                                <option value="03">部長</option>
+                                <option value="04">事業部長</option>
+                            </select>
+                        </dd>
+                    </div>
+                    <div class="staff-detail-item">
+                        <dt>マイナンバー</dt>
+                        <dd>
+                            <input type="text" th:field="*{staffMyno}">
+                        </dd>
+                    </div>
+                    <div class="staff-detail-item">
+                        <dt>在留カード</dt>
+                        <dd>
+                            <input id="staffResidencecard" type="text" th:field="*{staffResidencecard}">
+                            <input id="staffResidencecardHidden" type="hidden">
+                        </dd>
+                    </div>
+                    <div class="staff-detail-item">
+                        <dt>在留資格</dt>
+                        <dd>
+                            <select id="staffRestype" th:field="*{staffRestype}">
+                                <option value=""></option>
+                                <option value="01">技術・人文知識・国際業務</option>
+                                <option value="02">高度専門職</option>
+                                <option value="03">永住者</option>
+                                <option value="04">留学（在籍審中）</option>
+                                <option value="05">転勤（社内転勤）</option>
+                            </select>
+                            <input id="staffRestypeHidden" type="hidden">
+                        </dd>
+                    </div>
+                    <div class="staff-detail-item">
+                        <dt>在留カード有効期限</dt>
+                        <dd>
+                            <input id="staffCardenddt" type="date" name="staffCardenddt"
+                                th:value="${staff.staffCardenddt == null ? '' : #temporals.format(staff.staffCardenddt, 'yyyy-MM-dd')}">
+                            <input id="staffCardenddtHidden" type="hidden">
+                        </dd>
+                    </div>
+                    <div class="staff-detail-item staff-detail-item--photo">
+                        <dt>写真</dt>
+                        <dd class="staff-detail-photo-cell">
+                            <div class="staff-detail-photo-stack">
+                                <input type="file" name="photoFile" accept=".jpg,.jpeg,.png,.gif">
+                                <div class="staff-detail-photo-frame">
+                                    <img class="staff-detail-photo-preview"
+                                        th:if="*{staffPhoto != null and !staffPhoto.isEmpty()}" th:src="*{staffPhoto}"
+                                        alt="スタッフ写真">
+                                </div>
+                            </div>
+                        </dd>
+                    </div>
+                    <div class="staff-detail-item">
+                        <dt><span class="staff-detail-required">契約日</span></dt>
+                        <dd>
+                            <input id="staffIndt" type="date" name="staffIndt"
+                                th:value="${staff.staffIndt == null ? '' : #temporals.format(staff.staffIndt, 'yyyy-MM-dd')}"
+                                required>
+                        </dd>
+                    </div>
+                    <div class="staff-detail-item">
+                        <dt>退職日</dt>
+                        <dd>
+                            <input type="date" name="staffOutdt"
+                                th:value="${staff.staffOutdt == null ? '' : #temporals.format(staff.staffOutdt, 'yyyy-MM-dd')}">
+                        </dd>
+                    </div>
+                </dl>
 
-        <section class="panel form-section">
-            <h2>ファイル・備考</h2>
-            <div class="form-grid">
-                <label>
-                    <span>写真</span>
-                    <input type="file" name="photoFile" accept=".jpg,.jpeg,.png,.gif">
-                    <img class="photo-preview" th:if="*{staffPhoto != null and !staffPhoto.isEmpty()}"
-                        th:src="*{staffPhoto}" alt="スタッフ写真">
-                </label>
-                <label>
-                    <span>履歴書</span>
-                    <input type="file" name="resumeFile" accept=".pdf,.doc,.docx">
-                    <a class="file-link" th:if="*{staffResume != null and !staffResume.isEmpty()}"
-                        th:href="*{staffResume}" target="_blank">登録済み履歴書を開く</a>
-                </label>
-                <label class="span-2">
-                    <span>備考</span>
-                    <textarea th:field="*{staffRmk1}" rows="3"></textarea>
-                </label>
-                <label class="span-2">
-                    <span>得意分野・補足</span>
-                    <textarea th:field="*{staffRmk2}" rows="3"></textarea>
-                </label>
+                <dl class="staff-detail-list">
+                    <div class="staff-detail-item">
+                        <dt>部署</dt>
+                        <dd>
+                            <select th:field="*{staffGroup}">
+                                <option value=""></option>
+                                <option value="01">高速開発部</option>
+                                <option value="02">システム開発部</option>
+                                <option value="03">製品開発部</option>
+                                <option value="04">管理部</option>
+                                <option value="05">営業部</option>
+                            </select>
+                        </dd>
+                    </div>
+                    <div class="staff-detail-item">
+                        <dt>所属会社</dt>
+                        <dd>
+                            <input id="staffCompany" type="text" th:field="*{staffCompany}">
+                        </dd>
+                    </div>
+                    <div class="staff-detail-item">
+                        <dt>保険番号</dt>
+                        <dd>
+                            <input type="text" th:field="*{staffInsuranceno}">
+                        </dd>
+                    </div>
+                    <div class="staff-detail-item">
+                        <dt>保険種類</dt>
+                        <dd>
+                            <select th:field="*{staffInsurancetype}">
+                                <option value=""></option>
+                                <option value="01">国民</option>
+                                <option value="02">社会</option>
+                            </select>
+                        </dd>
+                    </div>
+                    <div class="staff-detail-item staff-detail-item--file">
+                        <dt>履歴書</dt>
+                        <dd class="staff-detail-file-cell">
+                            <input type="file" name="resumeFile" accept=".pdf,.doc,.docx">
+                            <a class="file-link" th:if="*{staffResume != null and !staffResume.isEmpty()}"
+                                th:href="*{staffResume}" target="_blank">登録済み履歴書を開く</a>
+                        </dd>
+                    </div>
+                    <div class="staff-detail-item staff-detail-item--specialty">
+                        <dt>得意分野</dt>
+                        <dd>
+                            <input id="staffRmk2" type="hidden" th:field="*{staffRmk2}">
+                            <div class="staff-detail-specialties">
+                                <label class="staff-detail-specialty-option"><input class="staff-detail-specialty-checkbox" type="checkbox" value="ローコード"><span>ローコード</span></label>
+                                <label class="staff-detail-specialty-option"><input class="staff-detail-specialty-checkbox" type="checkbox" value="バックエンド"><span>バックエンド</span></label>
+                                <label class="staff-detail-specialty-option"><input class="staff-detail-specialty-checkbox" type="checkbox" value="フロントエンド"><span>フロントエンド</span></label>
+                                <label class="staff-detail-specialty-option"><input class="staff-detail-specialty-checkbox" type="checkbox" value="インフラ"><span>インフラ</span></label>
+                                <label class="staff-detail-specialty-option"><input class="staff-detail-specialty-checkbox" type="checkbox" value="DBA"><span>DBA</span></label>
+                                <label class="staff-detail-specialty-option"><input class="staff-detail-specialty-checkbox" type="checkbox" value="AI"><span>AI</span></label>
+                                <label class="staff-detail-specialty-option"><input class="staff-detail-specialty-checkbox" type="checkbox" value="BSE"><span>BSE</span></label>
+                                <label class="staff-detail-specialty-option"><input class="staff-detail-specialty-checkbox" type="checkbox" value="PMO"><span>PMO</span></label>
+                                <label class="staff-detail-specialty-option"><input class="staff-detail-specialty-checkbox" type="checkbox" value="PM"><span>PM</span></label>
+                                <label class="staff-detail-specialty-option"><input class="staff-detail-specialty-checkbox" type="checkbox" value="リーダー"><span>リーダー</span></label>
+                                <label class="staff-detail-specialty-option"><input class="staff-detail-specialty-checkbox" type="checkbox" value="要件定義"><span>要件定義</span></label>
+                                <label class="staff-detail-specialty-option"><input class="staff-detail-specialty-checkbox" type="checkbox" value="基本設計"><span>基本設計</span></label>
+                                <label class="staff-detail-specialty-option"><input class="staff-detail-specialty-checkbox" type="checkbox" value="詳細設計"><span>詳細設計</span></label>
+                                <label class="staff-detail-specialty-option"><input class="staff-detail-specialty-checkbox" type="checkbox" value="製造"><span>製造</span></label>
+                                <label class="staff-detail-specialty-option"><input class="staff-detail-specialty-checkbox" type="checkbox" value="テスト"><span>テスト</span></label>
+                            </div>
+                        </dd>
+                    </div>
+                </dl>
             </div>
         </section>
     </div>

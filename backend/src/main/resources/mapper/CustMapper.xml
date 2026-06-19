@@ -38,10 +38,11 @@
         C.CUST_WEB, C.CUST_POSTNO, C.CUST_ADDRESS, C.CUST_PHONE, C.CUST_FAX, C.CUST_MONEY,
         C.CUST_TYPE, C.CUST_STARTDT, C.CUST_INVOICE_NO, C.CUST_INFOR_SECURITY, C.CUST_DISPATCH,
         C.CUST_COMPANYREP, C.CUST_RMK1, C.CUST_GETDT, C.CUST_GETCDT, C.CUST_ORDERGDT, C.CUST_PAYDT,
-        C.CUST_CLOSEDT, C.CUST_ORDERDT, C.BANK_CD, C.BANK_CHRCD, C.CUST_BANK_NM, C.CUST_BRANCH_CD AS
-        CUST_BRANCH_NM, C.CUST_DEPOSITTYPE, C.CUST_BRANCHCD, C.CUST_ACCOUNTNO, C.CUST_NOMINEE,
-        C.CUST_RMK2, C.CUST_CRD_USR, C.CUST_CRD_DT, C.CUST_UPD_USR, C.CUST_UPD_DT, M.MANAGER_NM,
-        M.MANAGER_PNO, M.MANAGER_MAIL, M.MANAGER_JOB, M.MANAGER_RMK FROM CUST_TBL C LEFT JOIN (
+        C.CUST_CLOSEDT, C.CUST_ORDERDT, C.BANK_CD, C.BANK_CHRCD, C.CUST_BANK_NM, B.BANK_BRANCHNM AS
+        CUST_BRANCH_NM, C.CUST_DEPOSITTYPE, C.CUST_BRANCH_CD, C.CUST_ACCOUNTNO,
+        C.CUST_NOMINEE, C.CUST_RMK2, C.CUST_CRD_USR, C.CUST_CRD_DT, C.CUST_UPD_USR, C.CUST_UPD_DT,
+        M.MANAGER_NM, M.MANAGER_PNO, M.MANAGER_MAIL, M.MANAGER_JOB, M.MANAGER_RMK FROM CUST_TBL C
+        LEFT JOIN BANK_TBL B ON B.BANK_CD = C.BANK_CD AND B.BANK_CHRCD = C.BANK_CHRCD LEFT JOIN (
         SELECT MANAGER_CUST_ID, GROUP_CONCAT( MANAGER_NM ORDER BY MANAGER_CD, MANAGER_CHRCD
         SEPARATOR '、' ) AS MANAGER_NM, GROUP_CONCAT( MANAGER_PNO ORDER BY MANAGER_CD, MANAGER_CHRCD
         SEPARATOR '、' ) AS MANAGER_PNO, GROUP_CONCAT( MANAGER_MAIL ORDER BY MANAGER_CD,
@@ -66,9 +67,9 @@
         #{custGetdt}, CUST_GETCDT = #{custGetcdt}, CUST_ORDERGDT = #{custOrdergdt}, CUST_PAYDT =
         #{custPaydt}, CUST_CLOSEDT = #{custClosedt}, CUST_ORDERDT = #{custOrderdt}, BANK_CD =
         #{bankCd}, BANK_CHRCD = #{bankChrcd}, CUST_BANK_NM = #{custBankNm}, CUST_BRANCH_CD =
-        #{custBranchNm}, CUST_DEPOSITTYPE = #{custDeposittype}, CUST_BRANCHCD = #{custBranchcd},
-        CUST_ACCOUNTNO = #{custAccountno}, CUST_NOMINEE = #{custNominee}, CUST_RMK2 = #{custRmk2},
-        CUST_UPD_DT = CURRENT_TIMESTAMP WHERE CUST_ID = #{custId} AND CUST_DELFLG = '0' </update>
+        #{custBranchCd}, CUST_DEPOSITTYPE = #{custDeposittype}, CUST_ACCOUNTNO = #{custAccountno},
+        CUST_NOMINEE = #{custNominee}, CUST_RMK2 = #{custRmk2}, CUST_UPD_DT = CURRENT_TIMESTAMP
+        WHERE CUST_ID = #{custId} AND CUST_DELFLG = '0' </update>
 
     <update id="updateManager" parameterType="com.company.backend.entity.Manager"> UPDATE MANG_TBL
         SET MANAGER_NM = #{managerNm}, MANAGER_PNO = #{managerPno}, MANAGER_MAIL = #{managerMail},
@@ -91,14 +92,14 @@
         CUST_POSTNO, CUST_ADDRESS, CUST_PHONE, CUST_FAX, CUST_MONEY, CUST_TYPE, CUST_STARTDT,
         CUST_INVOICE_NO, CUST_INFOR_SECURITY, CUST_DISPATCH, CUST_COMPANYREP, CUST_RMK1, CUST_GETDT,
         CUST_GETCDT, CUST_ORDERGDT, CUST_PAYDT, CUST_CLOSEDT, CUST_ORDERDT, BANK_CD, BANK_CHRCD,
-        CUST_BANK_NM, CUST_BRANCH_CD, CUST_DEPOSITTYPE, CUST_BRANCHCD, CUST_ACCOUNTNO, CUST_NOMINEE,
-        CUST_RMK2, CUST_DELFLG, CUST_CRD_USR, CUST_CRD_DT, CUST_UPD_USR, CUST_UPD_DT ) VALUES (
-        #{custNm}, #{custKn}, #{custWeb}, #{custPostno}, #{custAddress}, #{custPhone}, #{custFax},
+        CUST_BANK_NM, CUST_BRANCH_CD, CUST_DEPOSITTYPE, CUST_ACCOUNTNO, CUST_NOMINEE, CUST_RMK2,
+        CUST_DELFLG, CUST_CRD_USR, CUST_CRD_DT, CUST_UPD_USR, CUST_UPD_DT ) VALUES ( #{custNm},
+        #{custKn}, #{custWeb}, #{custPostno}, #{custAddress}, #{custPhone}, #{custFax},
         #{custMoney}, #{custType}, #{custStartdt}, #{custInvoiceNo}, #{custInforSecurity},
         #{custDispatch}, #{custCompanyrep}, #{custRmk1}, #{custGetdt}, #{custGetcdt},
         #{custOrdergdt}, #{custPaydt}, #{custClosedt}, #{custOrderdt}, #{bankCd}, #{bankChrcd},
-        #{custBankNm}, #{custBranchNm}, #{custDeposittype}, #{custBranchcd}, #{custAccountno},
-        #{custNominee}, #{custRmk2}, '0', 'system', CURRENT_TIMESTAMP, 'system', CURRENT_TIMESTAMP ) </insert>
+        #{custBankNm}, #{custBranchCd}, #{custDeposittype}, #{custAccountno}, #{custNominee},
+        #{custRmk2}, '0', 'system', CURRENT_TIMESTAMP, 'system', CURRENT_TIMESTAMP ) </insert>
     <update id="delete" parameterType="Long"> UPDATE CUST_TBL SET CUST_DELFLG = '1', CUST_UPD_USR =
         'system', CUST_UPD_DT = CURRENT_TIMESTAMP WHERE CUST_ID = #{custId} AND CUST_DELFLG = '0' </update>
 </mapper>

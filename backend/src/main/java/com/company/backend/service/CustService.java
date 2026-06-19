@@ -128,7 +128,7 @@ public class CustService {
         }
         cust.setCustBankNm(bank.getBankNm());
         cust.setCustBranchNm(bank.getBankBranchnm());
-        cust.setCustBranchcd(bank.getBankBranchcd());
+        cust.setCustBranchCd(bank.getBankBranchcd());
         cust.setCustAccountno(bank.getBankAccountno());
         cust.setCustNominee(bank.getBankNominee());
         cust.setCustDeposittype(bank.getBankDeposittype());

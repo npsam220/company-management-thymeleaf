@@ -1,9 +1,10 @@
 services:
 
   backend:
+
     build: ./backend
 
-    container_name: company-management-backend
+    container_name: company-thymeleaf-backend
 
     restart: unless-stopped
 
@@ -12,12 +13,14 @@ services:
         condition: service_healthy
 
     ports:
-      - "8081:8080"
+      - "8082:8080"
 
     volumes:
       - ./uploads:/app/uploads
 
     environment:
+      SPRING_PROFILES_ACTIVE: prod
+
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/company_management
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: springboot
@@ -25,15 +28,15 @@ services:
   mysql:
     image: mysql:8.0
 
-    container_name: company-management-mysql
+    container_name: company-thymeleaf-mysql
 
     restart: unless-stopped
 
     ports:
-      - "3308:3306"
+      - "3309:3306"
 
     volumes:
-      - mysql_data:/var/lib/mysql
+      - company_management_thymeleaf_mysql_data:/var/lib/mysql
 
     environment:
       MYSQL_ROOT_PASSWORD: springboot
@@ -47,4 +50,4 @@ services:
       start_period: 30s
 
 volumes:
-  mysql_data:
+  company_management_thymeleaf_mysql_data:

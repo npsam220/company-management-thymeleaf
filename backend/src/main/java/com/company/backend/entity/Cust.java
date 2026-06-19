@@ -68,13 +68,12 @@ public class Cust {
     private String bankChrcd;
     @Size(max = 20, message = "銀行名は20文字以内で入力してください。")
     private String custBankNm;
-    private String custBranchCd;
     @Size(max = 20, message = "支店名は20文字以内で入力してください。")
     private String custBranchNm;
-    @Pattern(regexp = "|01|02", message = "預金種別を正しく選択してください。")
+    @Pattern(regexp = "|01|02|03|04", message = "預金種別を正しく選択してください。")
     private String custDeposittype;
     @Size(max = 20, message = "支店番号は20文字以内で入力してください。")
-    private String custBranchcd;
+    private String custBranchCd;
     @Size(max = 20, message = "口座番号は20文字以内で入力してください。")
     private String custAccountno;
     @Size(max = 128, message = "名義人は128文字以内で入力してください。")
@@ -323,14 +322,6 @@ public class Cust {
         this.custBankNm = custBankNm;
     }
 
-    public String getCustBranchCd() {
-        return custBranchCd;
-    }
-
-    public void setCustBranchCd(String custBranchCd) {
-        this.custBranchCd = custBranchCd;
-    }
-
     public String getCustBranchNm() {
         return custBranchNm;
     }
@@ -347,12 +338,12 @@ public class Cust {
         this.custDeposittype = custDeposittype;
     }
 
-    public String getCustBranchcd() {
-        return custBranchcd;
+    public String getCustBranchCd() {
+        return custBranchCd;
     }
 
-    public void setCustBranchcd(String custBranchcd) {
-        this.custBranchcd = custBranchcd;
+    public void setCustBranchCd(String custBranchCd) {
+        this.custBranchCd = custBranchCd;
     }
 
     public String getCustAccountno() {

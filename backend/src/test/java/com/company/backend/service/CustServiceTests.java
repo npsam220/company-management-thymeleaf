@@ -79,7 +79,7 @@ class CustServiceTests {
         Cust updatedCust = captor.getValue();
         assertThat(updatedCust.getCustBankNm()).isEqualTo("三菱UFJ銀行");
         assertThat(updatedCust.getCustBranchNm()).isEqualTo("新宿支店");
-        assertThat(updatedCust.getCustBranchcd()).isEqualTo("341");
+        assertThat(updatedCust.getCustBranchCd()).isEqualTo("341");
         assertThat(updatedCust.getCustAccountno()).isEqualTo("3456789");
         assertThat(updatedCust.getCustNominee()).isEqualTo("カブシキガイシャサンプル");
         assertThat(updatedCust.getCustDeposittype()).isEqualTo("01");

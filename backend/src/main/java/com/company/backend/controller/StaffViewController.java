@@ -50,7 +50,7 @@ public class StaffViewController {
             @RequestParam(defaultValue = "5") int pageSize,
             Model model) {
 
-        int safePageSize = List.of(5, 10, 20).contains(pageSize) ? pageSize : DEFAULT_PAGE_SIZE;
+        int safePageSize = List.of(10, 30, 50).contains(pageSize) ? pageSize : DEFAULT_PAGE_SIZE;
         search.setPage(Math.max(page, 1));
         search.setPageSize(safePageSize);
 

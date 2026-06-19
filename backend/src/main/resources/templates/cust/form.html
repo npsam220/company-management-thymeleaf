@@ -179,107 +179,107 @@
                 </h2>
 
                 <div class="cust-detail-payment">
-                    <dl class="cust-detail-list">
-                        <div class="cust-detail-item">
-                            <dt>入金日</dt>
-                            <dd class="cust-detail-date-rule">
-                                <select aria-label="入金月" th:field="*{custGetdt}">
-                                    <option value="">選択</option>
-                                    <option value="01">当月</option>
-                                    <option value="02">翌月</option>
-                                    <option value="03">翌々月</option>
-                                </select>
-                                <select aria-label="入金締日" class="cust-detail-closing-day" data-day-input="custOrdergdt"
-                                    th:field="*{custGetcdt}">
-                                    <option value="">選択</option>
-                                    <option value="01">10日</option>
-                                    <option value="02">15日</option>
-                                    <option value="03">末日</option>
-                                    <option value="05">指定</option>
-                                </select>
-                                <span id="custOrdergdtGroup" class="cust-detail-specified-day">
-                                    <input id="custOrdergdt" aria-label="入金指定日" type="number" min="1" max="31"
-                                        th:field="*{custOrdergdt}">
-                                    <span>日</span>
-                                </span>
-                            </dd>
-                        </div>
-                        <div class="cust-detail-item">
-                            <dt>支払日</dt>
-                            <dd class="cust-detail-date-rule">
-                                <select aria-label="支払月" th:field="*{custPaydt}">
-                                    <option value="">選択</option>
-                                    <option value="01">当月</option>
-                                    <option value="02">翌月</option>
-                                    <option value="03">翌々月</option>
-                                </select>
-                                <select aria-label="支払締日" class="cust-detail-closing-day" data-day-input="custOrderdt"
-                                    th:field="*{custClosedt}">
-                                    <option value="">選択</option>
-                                    <option value="01">10日</option>
-                                    <option value="02">15日</option>
-                                    <option value="03">末日</option>
-                                    <option value="05">指定</option>
-                                </select>
-                                <span id="custOrderdtGroup" class="cust-detail-specified-day">
-                                    <input id="custOrderdt" aria-label="支払指定日" type="number" min="1" max="31"
-                                        th:field="*{custOrderdt}">
-                                    <span>日</span>
-                                </span>
-                            </dd>
-                        </div>
-                        <div class="cust-detail-item">
-                            <dt>
-                                <label for="custBankNm">銀行名<span class="cust-detail-required">*</span></label>
-                            </dt>
-                            <dd>
-                                <input id="bankCd" type="hidden" th:field="*{bankCd}">
-                                <input id="bankChrcd" type="hidden" th:field="*{bankChrcd}">
-                                <input id="custBankNm" type="text" th:field="*{custBankNm}" required>
-                                <button id="openBankSearch" class="button button--spec cust-detail-bank-search"
-                                    type="button">検索</button>
-                                <span class="field-error" th:if="${#fields.hasErrors('bankCd')}"
-                                    th:errors="*{bankCd}"></span>
-                            </dd>
-                        </div>
-                        <div class="cust-detail-item">
-                            <dt><label for="custBranchNm">支店名</label></dt>
-                            <dd><input id="custBranchNm" type="text" th:field="*{custBranchNm}"></dd>
-                        </div>
-                        <div class="cust-detail-item">
-                            <dt><label for="custDeposittype">預金種別</label></dt>
-                            <dd>
-                                <select id="custDeposittype" th:field="*{custDeposittype}">
-                                    <option value="">選択してください</option>
-                                    <option value="01">普通預金</option>
-                                    <option value="02">当座預金</option>
-                                </select>
-                                <input id="custDeposittypeMaster" type="hidden" disabled>
-                            </dd>
-                        </div>
-                        <div class="cust-detail-item cust-detail-item--remarks">
-                            <dt><label for="custRmk2">備考</label></dt>
-                            <dd><textarea id="custRmk2" rows="2" th:field="*{custRmk2}"></textarea></dd>
-                        </div>
-                    </dl>
-
-                    <dl class="cust-detail-list">
-                        <div class="cust-detail-payment-spacer" aria-hidden="true"></div>
-                        <div class="cust-detail-item">
-                            <dt>
-                                <label for="custBranchcd">支店番号<span class="cust-detail-required">*</span></label>
-                            </dt>
-                            <dd><input id="custBranchcd" type="text" th:field="*{custBranchcd}" required></dd>
-                        </div>
-                        <div class="cust-detail-item">
-                            <dt><label for="custAccountno">口座番号</label></dt>
-                            <dd><input id="custAccountno" type="text" th:field="*{custAccountno}"></dd>
-                        </div>
-                        <div class="cust-detail-item">
-                            <dt><label for="custNominee">名義人</label></dt>
-                            <dd><input id="custNominee" type="text" th:field="*{custNominee}"></dd>
-                        </div>
-                    </dl>
+                    <table class="cust-detail-payment-table">
+                        <tbody>
+                            <tr>
+                                <th>入金日</th>
+                                <td>
+                                    <div class="cust-detail-date-rule">
+                                        <select aria-label="入金月" th:field="*{custGetdt}">
+                                            <option value="">選択</option>
+                                            <option value="01">当月</option>
+                                            <option value="02">翌月</option>
+                                            <option value="03">翌々月</option>
+                                        </select>
+                                        <select aria-label="入金締日" class="cust-detail-closing-day" data-day-input="custOrdergdt"
+                                            th:field="*{custGetcdt}">
+                                            <option value="">選択</option>
+                                            <option value="01">10日</option>
+                                            <option value="02">15日</option>
+                                            <option value="03">末日</option>
+                                            <option value="05">指定</option>
+                                        </select>
+                                        <span id="custOrdergdtGroup" class="cust-detail-specified-day">
+                                            <input id="custOrdergdt" aria-label="入金指定日" type="number" min="1" max="31"
+                                                th:field="*{custOrdergdt}">
+                                            <span>日</span>
+                                        </span>
+                                    </div>
+                                </td>
+                                <th class="cust-detail-payment-table__empty" aria-hidden="true"></th>
+                                <td class="cust-detail-payment-table__empty" aria-hidden="true"></td>
+                            </tr>
+                            <tr>
+                                <th>支払日</th>
+                                <td>
+                                    <div class="cust-detail-date-rule">
+                                        <select aria-label="支払月" th:field="*{custPaydt}">
+                                            <option value="">選択</option>
+                                            <option value="01">当月</option>
+                                            <option value="02">翌月</option>
+                                            <option value="03">翌々月</option>
+                                        </select>
+                                        <select aria-label="支払締日" class="cust-detail-closing-day" data-day-input="custOrderdt"
+                                            th:field="*{custClosedt}">
+                                            <option value="">選択</option>
+                                            <option value="01">10日</option>
+                                            <option value="02">15日</option>
+                                            <option value="03">末日</option>
+                                            <option value="05">指定</option>
+                                        </select>
+                                        <span id="custOrderdtGroup" class="cust-detail-specified-day">
+                                            <input id="custOrderdt" aria-label="支払指定日" type="number" min="1" max="31"
+                                                th:field="*{custOrderdt}">
+                                            <span>日</span>
+                                        </span>
+                                    </div>
+                                </td>
+                                <th class="cust-detail-payment-table__empty" aria-hidden="true"></th>
+                                <td class="cust-detail-payment-table__empty" aria-hidden="true"></td>
+                            </tr>
+                            <tr>
+                                <th><label for="custBankNm">銀行名<span class="cust-detail-required">*</span></label></th>
+                                <td>
+                                    <div class="cust-detail-inline-action">
+                                        <input id="bankCd" type="hidden" th:field="*{bankCd}">
+                                        <input id="bankChrcd" type="hidden" th:field="*{bankChrcd}">
+                                        <input id="custBankNm" type="text" th:field="*{custBankNm}" required>
+                                        <button id="openBankSearch" class="button button--spec cust-detail-bank-search"
+                                            type="button">検索</button>
+                                    </div>
+                                    <span class="field-error" th:if="${#fields.hasErrors('bankCd')}"
+                                        th:errors="*{bankCd}"></span>
+                                </td>
+                                <th><label for="custBranchCd">支店番号<span class="cust-detail-required">*</span></label></th>
+                                <td><input id="custBranchCd" type="text" th:field="*{custBranchCd}" required></td>
+                            </tr>
+                            <tr>
+                                <th><label for="custBranchNm">支店名</label></th>
+                                <td><input id="custBranchNm" type="text" th:field="*{custBranchNm}"></td>
+                                <th><label for="custAccountno">口座番号</label></th>
+                                <td><input id="custAccountno" type="text" th:field="*{custAccountno}"></td>
+                            </tr>
+                            <tr>
+                                <th><label for="custDeposittype">預金種別</label></th>
+                                <td>
+                                    <select id="custDeposittype" th:field="*{custDeposittype}">
+                                        <option value="">選択してください</option>
+                                        <option value="01">普通預金</option>
+                                        <option value="02">当座預金</option>
+                                        <option value="03">貯蓄預金</option>
+                                        <option value="04">その他</option>
+                                    </select>
+                                    <input id="custDeposittypeMaster" type="hidden" disabled>
+                                </td>
+                                <th><label for="custNominee">名義人</label></th>
+                                <td><input id="custNominee" type="text" th:field="*{custNominee}"></td>
+                            </tr>
+                            <tr>
+                                <th><label for="custRmk2">備考</label></th>
+                                <td colspan="3"><textarea id="custRmk2" rows="2" th:field="*{custRmk2}"></textarea></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </section>
 

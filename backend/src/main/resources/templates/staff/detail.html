@@ -8,30 +8,27 @@
     <link rel="stylesheet" th:href="@{/css/app.css}">
 </head>
 
-<body>
+<body class="cust-spec-page staff-detail-page">
     <header class="app-header">
         <div class="app-header__inner">
             <a class="brand" th:href="@{/staff/list}">Company Management</a>
-            <span>スタッフ管理</span>
+            <span th:text="${pageTitle}">スタッフ情報更新</span>
         </div>
     </header>
     <main class="container">
-        <div class="page-heading">
-            <div>
-                <p class="eyebrow">STAFF MANAGEMENT</p>
-                <h1 th:text="${pageTitle}"></h1>
-            </div>
-            <a class="button button--secondary" th:href="@{/staff/list}">一覧へ戻る</a>
-        </div>
         <div class="alert alert--success" th:if="${message}" th:text="${message}"></div>
         <div class="alert alert--error" th:if="${errorMessage}" th:text="${errorMessage}"></div>
-        <form method="post" enctype="multipart/form-data" th:action="@{/staff/update}" th:object="${staff}">
+        <form class="cust-spec-shell staff-detail-shell" method="post" enctype="multipart/form-data"
+            th:action="@{/staff/update}" th:object="${staff}">
             <input type="hidden" th:field="*{staffId}">
-            <div th:replace="~{staff/form :: fields}"></div>
-            <div class="form-actions">
-                <a class="button button--secondary" th:href="@{/staff/list}">キャンセル</a>
-                <button class="button button--primary" type="submit">更新</button>
+            <div class="cust-spec-title">
+                <h1>スタッフ情報</h1>
             </div>
+            <div class="staff-detail-actions">
+                <button class="button button--spec" type="submit">更新</button>
+                <a class="button button--spec" th:href="@{/staff/list}">キャンセル</a>
+            </div>
+            <div th:replace="~{staff/form :: fields}"></div>
         </form>
     </main>
     <script th:src="@{/js/staff-form.js}"></script>

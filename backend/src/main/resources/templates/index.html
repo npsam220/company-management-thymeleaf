@@ -1,0 +1,50 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>会社管理システム</title>
+    <link rel="stylesheet" href="/css/app.css">
+</head>
+
+<body class="home-page">
+
+    <div class="home-container">
+
+        <div class="home-title">
+            <h1>会社管理システム</h1>
+            <p>Company Management System</p>
+        </div>
+        <p class="home-subtitle">
+            社内総合管理システム
+        </p>
+        <div class="home-menu">
+
+            <div class="home-card">
+                <div class="home-icon">👨‍💼</div>
+                <h2>スタッフ管理</h2>
+                <p>社員情報の管理</p>
+
+                <a th:href="@{/staff/list}" class="home-button">
+                    管理画面へ
+                </a>
+            </div>
+
+            <div class="home-card">
+                <div class="home-icon">🏢</div>
+                <h2>取引先管理</h2>
+                <p>取引先情報の管理</p>
+
+                <a th:href="@{/cust/list}" class="home-button">
+                    一覧へ
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="home-footer">
+        © 2026 Company Management System
+    </div>
+</body>
+
+</html>

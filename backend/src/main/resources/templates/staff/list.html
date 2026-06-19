@@ -1,133 +1,137 @@
 <!DOCTYPE html>
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>スタッフ情報一覧</title>
     <link rel="stylesheet" th:href="@{/css/app.css}">
 </head>
-<body>
-<header class="app-header">
-    <div class="app-header__inner">
-        <a class="brand" th:href="@{/staff/list}">Company Management</a>
-        <span>スタッフ管理</span>
-    </div>
-</header>
 
-<main class="container">
-    <div class="page-heading">
-        <div>
-            <p class="eyebrow">STAFF MANAGEMENT</p>
-            <h1>スタッフ情報一覧</h1>
+<body class="cust-spec-page staff-spec-page">
+    <header class="app-header">
+        <div class="app-header__inner">
+            <a class="brand" th:href="@{/staff/list}">Company Management</a>
+            <span>スタッフ情報一覧</span>
         </div>
-        <a class="button button--primary" th:href="@{/staff/create}">新規登録</a>
-    </div>
+    </header>
 
-    <div class="alert alert--success" th:if="${message}" th:text="${message}"></div>
+    <main class="container">
+        <div class="alert alert--success" th:if="${message}" th:text="${message}"></div>
 
-    <section class="panel">
-        <form method="get" th:action="@{/staff/list}" th:object="${search}">
-            <div class="search-grid">
-                <label>
-                    <span>氏名</span>
-                    <input type="text" th:field="*{staffNm}" placeholder="氏名を入力">
-                </label>
-                <label>
-                    <span>スタッフ区分</span>
-                    <select th:field="*{staffCls}">
-                        <option value="">すべて</option>
-                        <option th:each="item : ${staffClsList}"
-                                th:value="${item.comCd}"
-                                th:text="${item.comContent1}"></option>
-                    </select>
-                </label>
-                <label>
-                    <span>営業ステータス</span>
-                    <select th:field="*{staffSalesstatus}">
-                        <option value="">すべて</option>
-                        <option th:each="item : ${salesStatusList}"
-                                th:value="${item.comCd}"
-                                th:text="${item.comContent1}"></option>
-                    </select>
-                </label>
-                <label>
-                    <span>表示件数</span>
-                    <select name="pageSize">
-                        <option th:each="size : ${T(java.util.List).of(5, 10, 20)}"
-                                th:value="${size}"
-                                th:text="${size + '件'}"
-                                th:selected="${size == pageSize}"></option>
-                    </select>
-                </label>
+        <section class="cust-spec-shell">
+            <div class="cust-spec-title">
+                <h1>スタッフ情報一覧</h1>
             </div>
-            <div class="button-row">
-                <button class="button button--primary" type="submit">検索</button>
-                <a class="button button--secondary" th:href="@{/staff/list}">クリア</a>
+
+            <form method="get" th:action="@{/staff/list}" th:object="${search}">
+                <div class="staff-spec-search">
+                    <div class="staff-spec-search__row">
+                        <label class="staff-spec-label" for="staffNm">氏名</label>
+                        <input id="staffNm" type="text" th:field="*{staffNm}">
+                    </div>
+                    <div class="staff-spec-search__row">
+                        <label class="staff-spec-label" for="staffCls">スタッフ区分</label>
+                        <select id="staffCls" th:field="*{staffCls}">
+                            <option value=""></option>
+                            <option th:each="item : ${staffClsList}" th:value="${item.comCd}"
+                                th:text="${item.comContent1}"></option>
+                        </select>
+                    </div>
+                    <div class="staff-spec-search__row">
+                        <label class="staff-spec-label" for="staffSalesstatus">営業ステータス</label>
+                        <select id="staffSalesstatus" th:field="*{staffSalesstatus}">
+                            <option value=""></option>
+                            <option th:each="item : ${salesStatusList}" th:value="${item.comCd}"
+                                th:text="${item.comContent1}"></option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="cust-spec-actions staff-spec-actions">
+                    <button class="button button--spec" type="submit">検索</button>
+                    <a class="button button--spec" th:href="@{/staff/create}">新規入力</a>
+                    <a class="button button--spec" th:href="@{/staff/list}">リセット</a>
+                </div>
+            </form>
+
+            <div class="table-scroll">
+                <table class="cust-spec-table staff-spec-table">
+                    <thead>
+                        <tr>
+                            <th class="cust-spec-page-size">
+                                <form method="get" th:action="@{/staff/list}">
+                                    <label for="pageSize">表示件数</label>
+                                    <select id="pageSize" name="pageSize" onchange="this.form.submit()">
+                                        <option th:each="size : ${T(java.util.List).of(10, 30, 50)}" th:value="${size}"
+                                            th:text="${size}" th:selected="${size == pageSize}"></option>
+                                    </select>
+                                    <input type="hidden" name="staffNm" th:value="${search.staffNm}">
+                                    <input type="hidden" name="staffCls" th:value="${search.staffCls}">
+                                    <input type="hidden" name="staffSalesstatus" th:value="${search.staffSalesstatus}">
+                                </form>
+                            </th>
+                            <th>No.</th>
+                            <th>氏名</th>
+                            <th>スタッフ区分</th>
+                            <th>営業ステータス</th>
+                            <th>備考</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:if="${#lists.isEmpty(staffList)}">
+                            <td class="empty-state" colspan="6">該当するスタッフはありません。</td>
+                        </tr>
+                        <tr th:each="staff, stat : ${staffList}">
+                            <td class="cust-spec-action-cell">
+                                <a class="button button--spec"
+                                    th:href="@{/staff/detail/{id}(id=${staff.staffId})}">編集</a>
+                                <form method="post" th:action="@{/staff/delete/{id}(id=${staff.staffId})}"
+                                    onsubmit="return confirm('このスタッフを削除しますか？');">
+                                    <button class="button button--spec" type="submit">削除</button>
+                                </form>
+                            </td>
+                            <td th:text="${(currentPage - 1) * pageSize + stat.index + 1}"></td>
+                            <td th:text="${staff.staffNm}"></td>
+                            <td th:text="${staff.staffClsName}"></td>
+                            <td th:text="${staff.staffSalesstatusName}"></td>
+                            <td th:text="${staff.staffRmk1}"></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-        </form>
-    </section>
 
-    <section class="panel table-panel">
-        <div class="result-summary">
-            <strong th:text="${totalCount}">0</strong> 件
-        </div>
-        <div class="table-scroll">
-            <table>
-                <thead>
-                <tr>
-                    <th>No.</th>
-                    <th>氏名</th>
-                    <th>スタッフ区分</th>
-                    <th>営業ステータス</th>
-                    <th>備考</th>
-                    <th class="actions">操作</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:if="${#lists.isEmpty(staffList)}">
-                    <td colspan="6" class="empty-state">該当するスタッフはありません。</td>
-                </tr>
-                <tr th:each="staff, stat : ${staffList}">
-                    <td th:text="${(currentPage - 1) * pageSize + stat.count}"></td>
-                    <td>
-                        <a class="name-link"
-                           th:href="@{/staff/detail/{id}(id=${staff.staffId})}"
-                           th:text="${staff.staffNm}"></a>
-                        <small th:text="${staff.staffNo}"></small>
-                    </td>
-                    <td th:text="${staff.staffClsName}"></td>
-                    <td><span class="status" th:text="${staff.staffSalesstatusName}"></span></td>
-                    <td th:text="${staff.staffRmk1}"></td>
-                    <td class="actions">
-                        <a class="button button--small button--secondary"
-                           th:href="@{/staff/detail/{id}(id=${staff.staffId})}">編集</a>
-                        <form class="inline-form" method="post"
-                              th:action="@{/staff/delete/{id}(id=${staff.staffId})}"
-                              onsubmit="return confirm('このスタッフを削除しますか？');">
-                            <button class="button button--small button--danger" type="submit">削除</button>
-                        </form>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+            <div class="pagination-wrap" th:if="${totalPages > 1}">
+                <nav class="pagination">
+                    <a th:classappend="${currentPage == 1} ? ' disabled'"
+                        th:href="@{/staff/list(page=${currentPage - 1},pageSize=${pageSize},staffNm=${search.staffNm},staffCls=${search.staffCls},staffSalesstatus=${search.staffSalesstatus})}">&lt;&lt;</a>
+                    <a th:each="number : ${pageNumbers}" th:if="${totalPages <= 10 or number <= 5}"
+                        th:classappend="${number == currentPage} ? ' active'"
+                        th:href="@{/staff/list(page=${number},pageSize=${pageSize},staffNm=${search.staffNm},staffCls=${search.staffCls},staffSalesstatus=${search.staffSalesstatus})}"
+                        th:text="${number}"></a>
+                    <span class="pagination-ellipsis" th:if="${totalPages > 10}">...</span>
+                    <a th:each="number : ${pageNumbers}" th:if="${totalPages > 10 and number > totalPages - 5}"
+                        th:classappend="${number == currentPage} ? ' active'"
+                        th:href="@{/staff/list(page=${number},pageSize=${pageSize},staffNm=${search.staffNm},staffCls=${search.staffCls},staffSalesstatus=${search.staffSalesstatus})}"
+                        th:text="${number}"></a>
+                    <a th:classappend="${currentPage == totalPages} ? ' disabled'"
+                        th:href="@{/staff/list(page=${currentPage + 1},pageSize=${pageSize},staffNm=${search.staffNm},staffCls=${search.staffCls},staffSalesstatus=${search.staffSalesstatus})}">&gt;&gt;</a>
+                </nav>
 
-        <nav class="pagination" th:if="${totalPages > 1}">
-            <a th:classappend="${currentPage == 1} ? ' disabled'"
-               th:href="@{/staff/list(page=${currentPage - 1},pageSize=${pageSize},staffNm=${search.staffNm},staffCls=${search.staffCls},staffSalesstatus=${search.staffSalesstatus})}">
-                前へ
-            </a>
-            <a th:each="number : ${pageNumbers}"
-               th:if="${totalPages <= 10 or number == 1 or number == totalPages or (number >= currentPage - 2 and number <= currentPage + 2)}"
-               th:classappend="${number == currentPage} ? ' active'"
-               th:href="@{/staff/list(page=${number},pageSize=${pageSize},staffNm=${search.staffNm},staffCls=${search.staffCls},staffSalesstatus=${search.staffSalesstatus})}"
-               th:text="${number}"></a>
-            <a th:classappend="${currentPage == totalPages} ? ' disabled'"
-               th:href="@{/staff/list(page=${currentPage + 1},pageSize=${pageSize},staffNm=${search.staffNm},staffCls=${search.staffCls},staffSalesstatus=${search.staffSalesstatus})}">
-                次へ
-            </a>
-        </nav>
-    </section>
-</main>
+                <form class="pagination-jump" method="get" th:action="@{/staff/list}">
+                    <label for="staffPageJump">ページ</label>
+                    <select id="staffPageJump" name="page" onchange="this.form.submit()">
+                        <option th:each="number : ${#numbers.sequence(1, totalPages)}" th:value="${number}"
+                            th:text="${number}" th:selected="${number == currentPage}"></option>
+                    </select>
+                    <input type="hidden" name="pageSize" th:value="${pageSize}">
+                    <input type="hidden" name="staffNm" th:value="${search.staffNm}">
+                    <input type="hidden" name="staffCls" th:value="${search.staffCls}">
+                    <input type="hidden" name="staffSalesstatus" th:value="${search.staffSalesstatus}">
+                </form>
+            </div>
+        </section>
+    </main>
 </body>
+
 </html>
